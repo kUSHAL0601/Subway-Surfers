@@ -1,7 +1,8 @@
-var count_shapes = 10;
+var count_shapes = 15;
+var count_walls = 15;
 var count_obstacles = 1;
 var count_type_obstacles = 2;
-var colour = 1;
+var colour = 0;
 var lastFrames = -1;
 var changeLighting = 0;
 var periodicRandom = 0;
@@ -64,107 +65,107 @@ function create_octagon0(){
 	dict['position'] = [0, -0.25, 0];
 	dict['radius'] = 1/Math.cos(halfAngle);
 	dict['positions'] = [
-      // Right face
-      1.0, 0.0, 1.0,
-      1.0, 0.0, -1.0,
-      -1.0, 0.0, -1.0,
-      -1.0, 0.0, 1.0,
-
-      // Top Right face
-      2.0, 0.0, 1.0,
-      2.0, 0.0, -1.0,
-      1.0, 0.0, -1.0,
-      1.0, 0.0, 1.0,
-
-      // Top faces
-      -2.0, 0.0, 1.0,
-      -2.0, 0.0, -1.0,
-      -1.0, 0.0, -1.0,
-      -1.0, 0.0, 1.0,
-
-      // Top Left face
-      3.0, 0.0, 1.0,
-      3.0, 0.0, -1.0,
-      2.0, 0.0, -1.0,
-      2.0, 0.0, 1.0,
-
-      // Left fact
-      -2.0, 0.0, 1.0,
-      -2.0, 0.0, -1.0,
-      -3.0, 0.0, -1.0,
-      -3.0, 0.0, 1.0,
-
-      // Bottom Left face
-    //   -Math.tan(halfAngle), -1.0, 1.0,
-    //   -Math.tan(halfAngle), -1.0, -1.0,
-    //   -1.0, -Math.tan(halfAngle), -1.0,
-    //   -1.0, -Math.tan(halfAngle), 1.0,
-
-    //   // Bottom faces
-    //   Math.tan(halfAngle), -1.0, 1.0,
-    //   Math.tan(halfAngle), -1.0, -1.0,
-    //   -Math.tan(halfAngle), -1.0, -1.0,
-    //   -Math.tan(halfAngle), -1.0, 1.0,
-
-    //   // Bottom Right face
-    //   1.0, -Math.tan(halfAngle), 1.0,
-    //   1.0, -Math.tan(halfAngle), -1.0,
-    //   Math.tan(halfAngle), -1.0, -1.0,
-    //   Math.tan(halfAngle), -1.0, 1.0,
-
-      
-    ];
-
-    dict['normals'] = [
-	  // Right face
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-
-      // Top Right face
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-
-      // Top faces
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-
-      // Top Left face
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-
-      // Left fact
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-      0.0, 1.0, 1.0,
-
-      // Bottom Left face
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-
-    //   // Bottom faces
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-
-    //   // Bottom Right face
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    //   0.0, 1.0, 1.0,
-    ];
-
+        // Right face
+        0.5, 0.0, 1.0,
+        0.5, 0.0, -1.0,
+        -0.5, 0.0, -1.0,
+        -0.5, 0.0, 1.0,
+  
+        // Top Right face
+        1.5, 0.0, 1.0,
+        1.5, 0.0, -1.0,
+        0.5, 0.0, -1.0,
+        0.5, 0.0, 1.0,
+  
+        // Top faces
+        -1.5, 0.0, 1.0,
+        -1.5, 0.0, -1.0,
+        -0.5, 0.0, -1.0,
+        -0.5, 0.0, 1.0,
+  
+        // // Top Left face
+        // 2.5, 0.0, 1.0,
+        // 2.5, 0.0, -1.0,
+        // 1.5, 0.0, -1.0,
+        // 1.5, 0.0, 1.0,
+  
+        // // Left fact
+        // -1.5, 0.0, 1.0,
+        // -1.5, 0.0, -1.0,
+        // -2.5, 0.0, -1.0,
+        // -2.5, 0.0, 1.0,
+  
+        // Bottom Left face
+      //   -Math.tan(halfAngle), -1.0, 1.0,
+      //   -Math.tan(halfAngle), -1.0, -1.0,
+      //   -1.0, -Math.tan(halfAngle), -1.0,
+      //   -1.0, -Math.tan(halfAngle), 1.0,
+  
+      //   // Bottom faces
+      //   Math.tan(halfAngle), -1.0, 1.0,
+      //   Math.tan(halfAngle), -1.0, -1.0,
+      //   -Math.tan(halfAngle), -1.0, -1.0,
+      //   -Math.tan(halfAngle), -1.0, 1.0,
+  
+      //   // Bottom Right face
+      //   1.0, -Math.tan(halfAngle), 1.0,
+      //   1.0, -Math.tan(halfAngle), -1.0,
+      //   Math.tan(halfAngle), -1.0, -1.0,
+      //   Math.tan(halfAngle), -1.0, 1.0,
+  
+        
+      ];
+  
+      dict['normals'] = [
+        // Right face
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+  
+        // Top Right face
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+  
+        // Top faces
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+        0.0, 1.0, 1.0,
+  
+        // // Top Left face
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+  
+        // // Left face
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+  
+        // Bottom Left face
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+  
+      //   // Bottom faces
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+  
+      //   // Bottom Right face
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      ];
+  
     dict['textureCoordinates'] = [
 	    // Front
 	    0.0,  0.0,
@@ -181,16 +182,16 @@ function create_octagon0(){
 	    1.0,  0.0,
 	    1.0,  1.0,
 	    0.0,  1.0,
-	    // Bottom
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
-	    // Right
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
+	    // // Bottom
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
+	    // // Right
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
 	    // Left
 	    // 0.0,  0.0,
 	    // 1.0,  0.0,
@@ -211,11 +212,12 @@ function create_octagon0(){
     if(level<=1 || grayscale)
     {
 	    dict['faceColors'] = [
-	      [1.0,  1.0,  1.0,  1.0],    // Top face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Top face: white
 	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
-	      [1.0,  1.0,  1.0,  1.0],    // Left face: white
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
 	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
-	      [1.0,  1.0,  1.0,  1.0],    // Bottom face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Left face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Bottom face: white
 	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Right face: black
 	    //   [1.0,  1.0,  1.0,  1.0],    // Right face: white
 	    //   [0.0,  0.0,  0.0,  1.0],    // Top Right face: black
@@ -224,11 +226,11 @@ function create_octagon0(){
 	else
 	{
     	dict['faceColors'] = [
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top face: white
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Left Right face: black
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Left face: white
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        //     [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
 	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
 	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
 	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
@@ -238,8 +240,8 @@ function create_octagon0(){
       0,  1,  2,      0,  2,  3,    // right
       4,  5,  6,      4,  6,  7,    // right top
       8,  9,  10,     8,  10, 11,   // top
-      12, 13, 14,     12, 14, 15,   // top left
-      16, 17, 18,     16, 18, 19,   // left
+    //   12, 13, 14,     12, 14, 15,   // top left
+    //   16, 17, 18,     16, 18, 19,   // left
     //   20, 21, 22,     20, 22, 23,   // bottom left
     //   24, 25, 26,     24, 26, 27,   // bottom
     //   28, 29, 30,     28, 30, 31,   // bottom right
@@ -250,121 +252,119 @@ function create_octagon0(){
     dict['speed'] = 7;
     dict['numComponentsPosition'] = 3;
     dict['numComponentsColor'] = 4;
-    dict['vertexCount'] = 20;
+    dict['vertexCount'] = 18;
     dict['rotation'] = 0.05;
     dict['category'] = 0;
     
     return dict;
 }
 
-var speed_level = [0, 2, 4];
-
-function create_octagon1(){
+function create_wall(){
 	dict = {};
-	dict['position'] = [0, 0.25, 0];
+	dict['position'] = [0, -0.25, 0];
 	dict['radius'] = 1/Math.cos(halfAngle);
 	dict['positions'] = [
-      // Right face
-      1.0, Math.tan(halfAngle), 1.0,
-      1.0, Math.tan(halfAngle), -1.0,
-      1.0, Math.tan(-halfAngle), -1.0,
-      1.0, Math.tan(-halfAngle), 1.0,
-
-      // Top Right face
-      Math.tan(halfAngle), 1.0, 1.0,
-      Math.tan(halfAngle), 1.0, -1.0,
-      1.0, Math.tan(halfAngle), -1.0,
-      1.0, Math.tan(halfAngle), 1.0,     
-
-      // Top faces
-      -Math.tan(halfAngle), 1.0, 1.0,
-      -Math.tan(halfAngle), 1.0, -1.0,
-      Math.tan(halfAngle), 1.0, -1.0,
-      Math.tan(halfAngle), 1.0, 1.0,
-
-      // Top Left face
-      -1.0, Math.tan(halfAngle), 1.0,
-      -1.0, Math.tan(halfAngle), -1.0,
-      -Math.tan(halfAngle), 1.0, -1.0,
-      -Math.tan(halfAngle), 1.0, 1.0,
-
-      // Left fact
-      -1.0, Math.tan(halfAngle), 1.0,
-      -1.0, Math.tan(halfAngle), -1.0,
-      -1.0, Math.tan(-halfAngle), -1.0,
-      -1.0, Math.tan(-halfAngle), 1.0,
-
-      // Bottom Left face
-      -Math.tan(halfAngle), -1.0, 1.0,
-      -Math.tan(halfAngle), -1.0, -1.0,
-      -1.0, -Math.tan(halfAngle), -1.0,
-      -1.0, -Math.tan(halfAngle), 1.0,
-
-      // Bottom faces
-      Math.tan(halfAngle), -1.0, 1.0,
-      Math.tan(halfAngle), -1.0, -1.0,
-      -Math.tan(halfAngle), -1.0, -1.0,
-      -Math.tan(halfAngle), -1.0, 1.0,
-
-      // Bottom Right face
-      1.0, -Math.tan(halfAngle), 1.0,
-      1.0, -Math.tan(halfAngle), -1.0,
-      Math.tan(halfAngle), -1.0, -1.0,
-      Math.tan(halfAngle), -1.0, 1.0,
-
-      
-    ];
-
-    dict['normals'] = [
-	  // Right face
-      Math.cos(Math.PI + 0*Math.PI/4), Math.sin(Math.PI + 0*Math.PI/4), 0,
-      Math.cos(Math.PI + 0*Math.PI/4), Math.sin(Math.PI + 0*Math.PI/4), 0,
-      Math.cos(Math.PI + 0*Math.PI/4), Math.sin(Math.PI + 0*Math.PI/4), 0,
-      Math.cos(Math.PI + 0*Math.PI/4), Math.sin(Math.PI + 0*Math.PI/4), 0,
-
-      // Top Right face
-      Math.cos(Math.PI + 1*Math.PI/4), Math.sin(Math.PI + 1*Math.PI/4), 0,
-      Math.cos(Math.PI + 1*Math.PI/4), Math.sin(Math.PI + 1*Math.PI/4), 0,
-      Math.cos(Math.PI + 1*Math.PI/4), Math.sin(Math.PI + 1*Math.PI/4), 0,
-      Math.cos(Math.PI + 1*Math.PI/4), Math.sin(Math.PI + 1*Math.PI/4), 0,
-
-      // Top faces
-      Math.cos(Math.PI + 2*Math.PI/4), Math.sin(Math.PI + 2*Math.PI/4), 0,
-      Math.cos(Math.PI + 2*Math.PI/4), Math.sin(Math.PI + 2*Math.PI/4), 0,
-      Math.cos(Math.PI + 2*Math.PI/4), Math.sin(Math.PI + 2*Math.PI/4), 0,
-      Math.cos(Math.PI + 2*Math.PI/4), Math.sin(Math.PI + 2*Math.PI/4), 0,
-
-      // Top Left face
-      Math.cos(Math.PI + 3*Math.PI/4), Math.sin(Math.PI + 3*Math.PI/4), 0,
-      Math.cos(Math.PI + 3*Math.PI/4), Math.sin(Math.PI + 3*Math.PI/4), 0,
-      Math.cos(Math.PI + 3*Math.PI/4), Math.sin(Math.PI + 3*Math.PI/4), 0,
-      Math.cos(Math.PI + 3*Math.PI/4), Math.sin(Math.PI + 3*Math.PI/4), 0,
-
-      // Left fact
-      Math.cos(Math.PI + 4*Math.PI/4), Math.sin(Math.PI + 4*Math.PI/4), 0,
-      Math.cos(Math.PI + 4*Math.PI/4), Math.sin(Math.PI + 4*Math.PI/4), 0,
-      Math.cos(Math.PI + 4*Math.PI/4), Math.sin(Math.PI + 4*Math.PI/4), 0,
-      Math.cos(Math.PI + 4*Math.PI/4), Math.sin(Math.PI + 4*Math.PI/4), 0,
-
-      // Bottom Left face
-      Math.cos(Math.PI + 5*Math.PI/4), Math.sin(Math.PI + 5*Math.PI/4), 0,
-      Math.cos(Math.PI + 5*Math.PI/4), Math.sin(Math.PI + 5*Math.PI/4), 0,
-      Math.cos(Math.PI + 5*Math.PI/4), Math.sin(Math.PI + 5*Math.PI/4), 0,
-      Math.cos(Math.PI + 5*Math.PI/4), Math.sin(Math.PI + 5*Math.PI/4), 0,
-
-      // Bottom faces
-      Math.cos(Math.PI + 6*Math.PI/4), Math.sin(Math.PI + 6*Math.PI/4), 0,
-      Math.cos(Math.PI + 6*Math.PI/4), Math.sin(Math.PI + 6*Math.PI/4), 0,
-      Math.cos(Math.PI + 6*Math.PI/4), Math.sin(Math.PI + 6*Math.PI/4), 0,
-      Math.cos(Math.PI + 6*Math.PI/4), Math.sin(Math.PI + 6*Math.PI/4), 0,
-
-      // Bottom Right face
-      Math.cos(Math.PI + 7*Math.PI/4), Math.sin(Math.PI + 7*Math.PI/4), 0,
-      Math.cos(Math.PI + 7*Math.PI/4), Math.sin(Math.PI + 7*Math.PI/4), 0,
-      Math.cos(Math.PI + 7*Math.PI/4), Math.sin(Math.PI + 7*Math.PI/4), 0,
-      Math.cos(Math.PI + 7*Math.PI/4), Math.sin(Math.PI + 7*Math.PI/4), 0,
-    ];
-
+        // Right face
+        1.5, 0.0, 1.0,
+        1.5, 0.0, -1.0,
+        1.5, 3.0, -1.0,
+        1.5, 3.0, 1.0,
+  
+        // Top Right face
+        -1.5, 0.0, 1.0,
+        -1.5, 0.0, -1.0,
+        -1.5, 3.0, -1.0,
+        -1.5, 3.0, 1.0,
+  
+        // Top faces
+        // -1.5, 0.0, 1.0,
+        // -1.5, 0.0, -1.0,
+        // -0.5, 0.0, -1.0,
+        // -0.5, 0.0, 1.0,
+  
+        // Top Left face
+        // 2.5, 0.0, 1.0,
+        // 2.5, 0.0, -1.0,
+        // 1.5, 0.0, -1.0,
+        // 1.5, 0.0, 1.0,
+  
+        // Left fact
+        // -1.5, 0.0, 1.0,
+        // -1.5, 0.0, -1.0,
+        // -2.5, 0.0, -1.0,
+        // -2.5, 0.0, 1.0,
+  
+        // Bottom Left face
+      //   -Math.tan(halfAngle), -1.0, 1.0,
+      //   -Math.tan(halfAngle), -1.0, -1.0,
+      //   -1.0, -Math.tan(halfAngle), -1.0,
+      //   -1.0, -Math.tan(halfAngle), 1.0,
+  
+      //   // Bottom faces
+      //   Math.tan(halfAngle), -1.0, 1.0,
+      //   Math.tan(halfAngle), -1.0, -1.0,
+      //   -Math.tan(halfAngle), -1.0, -1.0,
+      //   -Math.tan(halfAngle), -1.0, 1.0,
+  
+      //   // Bottom Right face
+      //   1.0, -Math.tan(halfAngle), 1.0,
+      //   1.0, -Math.tan(halfAngle), -1.0,
+      //   Math.tan(halfAngle), -1.0, -1.0,
+      //   Math.tan(halfAngle), -1.0, 1.0,
+  
+        
+      ];
+  
+      dict['normals'] = [
+        // Right face
+        -1.0, 0.0, 0.0,
+        -1.0, 0.0, 0.0,
+        -1.0, 0.0, 0.0,
+        -1.0, 0.0, 0.0,
+  
+        // Top Right face
+        -1.0, 0.0, 0.0,
+        -1.0, 0.0, 0.0,
+        -1.0, 0.0, 0.0,
+        -1.0, 0.0, 0.0,
+  
+        // Top faces
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+  
+        // Top Left face
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+  
+        // Left fact
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+        // 0.0, 1.0, 1.0,
+  
+        // Bottom Left face
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+  
+      //   // Bottom faces
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+  
+      //   // Bottom Right face
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      //   0.0, 1.0, 1.0,
+      ];
+  
     dict['textureCoordinates'] = [
 	    // Front
 	    0.0,  0.0,
@@ -377,73 +377,72 @@ function create_octagon1(){
 	    1.0,  1.0,
 	    0.0,  1.0,
 	    // Top
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
 	    // Bottom
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
 	    // Right
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
 	    // Left
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
-	    // Left
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
-	    // Left
-	    0.0,  0.0,
-	    1.0,  0.0,
-	    1.0,  1.0,
-	    0.0,  1.0,
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
+	    // // Left
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
+	    // // Left
+	    // 0.0,  0.0,
+	    // 1.0,  0.0,
+	    // 1.0,  1.0,
+	    // 0.0,  1.0,
 	];
 
     if(level<=1 || grayscale)
     {
-    	dict['faceColors'] = [
-	      [0.0,  0.0,  0.0,  1.0],    // Right face: white
-	      [1.0,  1.0,  1.0,  1.0],    // Top Right face: black
-	      [0.0,  0.0,  0.0,  1.0],    // Top face: white
-	      [1.0,  1.0,  1.0,  1.0],    // Top Left Right face: black
-	      [0.0,  0.0,  0.0,  1.0],    // Left face: white
-	      [1.0,  1.0,  1.0,  1.0],    // Bottom Left face: black
-	      [0.0,  0.0,  0.0,  1.0],    // Bottom face: white
-	      [1.0,  1.0,  1.0,  1.0],    // Bottom Right face: black
+	    dict['faceColors'] = [
+        [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Left face: white
+        //   [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Right face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Right face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Top Right face: black
 	    ];
 	}
 	else
 	{
     	dict['faceColors'] = [
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top face: white
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Left Right face: black
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Left face: white
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
-	      [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
+        [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Left face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
 	    ];		
 	}
-
     dict['indices'] = [
-      8,  9,  10,     8,  10, 11,   // top
-      12, 13, 14,     12, 14, 15,   // top left
-      16, 17, 18,     16, 18, 19,   // left
-      20, 21, 22,     20, 22, 23,   // bottom left
-      24, 25, 26,     24, 26, 27,   // bottom
-      28, 29, 30,     28, 30, 31,   // bottom right
       0,  1,  2,      0,  2,  3,    // right
       4,  5,  6,      4,  6,  7,    // right top
+    //   8,  9,  10,     8,  10, 11,   // top
+    //   12, 13, 14,     12, 14, 15,   // top left
+    //   16, 17, 18,     16, 18, 19,   // left
+    //   20, 21, 22,     20, 22, 23,   // bottom left
+    //   24, 25, 26,     24, 26, 27,   // bottom
+    //   28, 29, 30,     28, 30, 31,   // bottom right
     ];
     dict['rotationX'] = 0;
     dict['rotationY'] = 0;
@@ -451,12 +450,16 @@ function create_octagon1(){
     dict['speed'] = 7;
     dict['numComponentsPosition'] = 3;
     dict['numComponentsColor'] = 4;
-    dict['vertexCount'] = 48;
+    dict['vertexCount'] = 12;
     dict['rotation'] = 0.05;
     dict['category'] = 1;
     
-    return dict;	
+    return dict;
 }
+
+
+var speed_level = [0, 2, 4];
+
 
 var game_over = 0;
 var speed_multiplier = 1;
@@ -1024,22 +1027,28 @@ function main() {
   // objects we'll be drawing.
 
   shapes = [];
+  walls = [];
   obstacles = [];
   
   buffer_shapes = [];
+  buffer_walls = [];
   buffer_obstacles = [];
   var i = 0; 
   while(i < count_shapes){
-      if(i%2==1){
         shapes.push(create_octagon0());
-      }
-      else{
-        shapes.push(create_octagon0());
-      }
+        // shapes.push(create_wall());
       shapes[i].position[2] = -2*i;
       buffer_shapes.push(initBuffers(gl, shapes[i]));
       i++;
   }
+  i=0;
+  while(i < count_walls){
+    walls.push(create_wall());
+    // shapes.push(create_wall());
+  walls[i].position[2] = -2*i;
+  buffer_walls.push(initBuffers(gl, walls[i]));
+  i++;
+}
 
 
   i=0;
@@ -1060,15 +1069,16 @@ function main() {
       i++;
   }
 
-  light_source = create_light_source();
-  buffer_light_source = initBuffers(gl, light_source);
+//   light_source = create_light_source();
+//   buffer_light_source = initBuffers(gl, light_source);
 
   const texture = loadTexture(gl, 'texture-1.jpg');
-  const texture_1 = loadTexture(gl, 'texture-2.jpg');
+  const texture_1 = loadTexture(gl, 'texture-4.png');
   const texture_2 = loadTexture(gl, 'texture-3.jpg');
-  const texture_3 = loadTexture(gl, 'texture-4.jpg');
+  const texture_3 = loadTexture(gl, 'texture-4.png');
   const texture_g1 = loadTexture(gl, 'texture-g1.jpg');
   const texture_g2 = loadTexture(gl, 'texture-g2.jpg');
+  const texture_w = loadTexture(gl, 'wall.png');
 
   var then = 0;
   var theta = 0;
@@ -1089,7 +1099,7 @@ function main() {
 
     var i=0;
     while(i < count_shapes){
-        shapes[i].position[0] = amplitude * Math.sin(2 * Math.PI * frames / 4);
+        // shapes[i].position[0] = amplitude * Math.sin(2 * Math.PI * frames / 4);
         if(shapes[i].category==0)
         	if(grayscale==0)
         		drawScene(gl, projectionMatrix, shapes[i], programInfo, buffer_shapes[i], texture_1, deltaTime);
@@ -1103,12 +1113,18 @@ function main() {
         i++;
     }
     i=0;
+    while(i<count_walls)
+    {
+        drawScene(gl, projectionMatrix, walls[i], programInfo, buffer_walls[i], texture_w, deltaTime);
+        i++;
+    }
+    i=0;
     while(i < count_obstacles){
-        obstacles[i].position[0] = amplitude * Math.sin(2 * Math.PI * frames / 4);
+        // obstacles[i].position[0] = amplitude * Math.sin(2 * Math.PI * frames / 4);
         drawScene(gl, projectionMatrix, obstacles[i], programInfo, buffer_obstacles[i], texture, deltaTime);
         i++;
     }
-    drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
+    // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
 
     requestAnimationFrame(shakey_screen);
   }
@@ -1129,19 +1145,19 @@ function main() {
     print_data(deltaTime);
 
     then = now;
-    refresh_tunnel(gl, shapes, buffer_shapes);
+    refresh_tunnel(gl, shapes, buffer_shapes,walls,buffer_walls);
     refresh_obstacles(gl, obstacles, buffer_obstacles);
-    handleKeys(shapes, obstacles, light_source);
+    handleKeys(shapes, obstacles);
 
-    if(changeLighting==1)
-    {
-    	if(colour==1)colour=2;
-    	else if(colour==0)colour=1;
-    	else colour = 0;
+    // if(changeLighting==1)
+    // {
+    // 	if(colour==1)colour=2;
+    // 	else if(colour==0)colour=1;
+    // 	else colour = 0;
 
-    	changeLighting = 0;
-    	changeShader(gl);
-    }
+    // 	changeLighting = 0;
+    // 	changeShader(gl);
+    // }
 
     if(periodicRandom==1)
     {
@@ -1172,21 +1188,21 @@ function main() {
       }
     }
 
-    if(oscillation>=1)
-    {
-    	if(light_source.position[2]>=-10 && oscillation==1)
-    	{
-    		light_source.position[2] -= 0.05;
-    		source_position[2] -= 0.05;
-    	}
-    	else if(light_source.position[2]<-10 && oscillation==1)oscillation=2;
-    	else if(light_source.position[2]<=-2 && oscillation==2)
-    	{
-    		light_source.position[2] += 0.075;
-    		source_position[2] += 0.075;	
-    	}
-    	else if(light_source.position[2]>-2 && oscillation==2)oscillation=1;
-    }
+    // if(oscillation>=1)
+    // {
+    // 	if(light_source.position[2]>=-10 && oscillation==1)
+    // 	{
+    // 		light_source.position[2] -= 0.05;
+    // 		source_position[2] -= 0.05;
+    // 	}
+    // 	else if(light_source.position[2]<-10 && oscillation==1)oscillation=2;
+    // 	else if(light_source.position[2]<=-2 && oscillation==2)
+    // 	{
+    // 		light_source.position[2] += 0.075;
+    // 		source_position[2] += 0.075;	
+    // 	}
+    // 	else if(light_source.position[2]>-2 && oscillation==2)oscillation=1;
+    // }
 
     if(jump==1)
     {
@@ -1209,11 +1225,11 @@ function main() {
     		else if(i==count_obstacles-1)jump=2;
     		i++;
     	}
-    	if(light_source.position[1] > -0.4)
-    	{
-    		//light_source.position[1] -= 0.05;
-    		//source_position -= 0.05;	
-    	}
+    	// if(light_source.position[1] > -0.4)
+    	// {
+    	// 	//light_source.position[1] -= 0.05;
+    	// 	//source_position -= 0.05;	
+    	// }
     	
     }
     else if(jump==2)
@@ -1238,11 +1254,11 @@ function main() {
     		else if(i==count_obstacles-1)jump=0;
     		i++;
     	}
-    	if(light_source.position[1] < 0.0)
-    	{
-    		//light_source.position[1] += 0.05;
-    		//source_position += 0.05;	
-    	}
+    	// if(light_source.position[1] < 0.0)
+    	// {
+    	// 	//light_source.position[1] += 0.05;
+    	// 	//source_position += 0.05;	
+    	// }
     	
     }
 
@@ -1263,6 +1279,13 @@ function main() {
         i++;
     }
     i=0;
+    while(i < count_walls){
+        walls[i].position[2] += pause * walls[i].speed * deltaTime;
+        drawScene(gl, projectionMatrix, walls[i], programInfo, buffer_walls[i], texture_w, deltaTime);
+        i++;
+    }
+
+    i=0;
     while(i < count_obstacles){
         obstacles[i].position[2] += pause * obstacles[i].speed * deltaTime;
         //console.log(obstacles[i].rotation, score);
@@ -1273,7 +1296,7 @@ function main() {
         i++;
     }
     //light_source.position[2] += pause * light_source.speed * deltaTime;
-    drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
+    // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
 
     if(!detect_collision(shapes, obstacles)){
         requestAnimationFrame(render);
@@ -1303,18 +1326,18 @@ function print_data(deltaTime){
 }
 
 function detect_collision(shapes, obstacles){
-    for (var i = 0; i < count_obstacles; i++){
-        if(obstacles[i].position[2] > -0.5){
-            var theta = obstacles[i].rotationZ - Math.floor(obstacles[i].rotationZ / Math.PI) * Math.PI;
-            var alpha = shapes[0].rotationZ - Math.floor(shapes[0].rotationZ / Math.PI) * Math.PI;
+    // for (var i = 0; i < count_obstacles; i++){
+    //     if(obstacles[i].position[2] > -0.5){
+    //         var theta = obstacles[i].rotationZ - Math.floor(obstacles[i].rotationZ / Math.PI) * Math.PI;
+    //         var alpha = shapes[0].rotationZ - Math.floor(shapes[0].rotationZ / Math.PI) * Math.PI;
 
-            if((theta+halfAngle)>Math.PI)theta-=Math.PI;
-            if((-Math.PI / 8 <= theta && theta <= Math.PI / 8) || Math.abs(obstacles[i].position[1])<=0.05){
-                return true;
-            }
+    //         if((theta+halfAngle)>Math.PI)theta-=Math.PI;
+    //         if((-Math.PI / 8 <= theta && theta <= Math.PI / 8) || Math.abs(obstacles[i].position[1])<=0.05){
+    //             return true;
+    //         }
             
-        }
-    }
+    //     }
+    // }
     return false;
 }
 
@@ -1393,7 +1416,7 @@ function handleKeyUp(event){
 	else if(event.keyCode == 79){
 		// O key
 		if(oscillation==0)oscillation=1;
-		else if(oscillation>=1){oscillation=0;light_source.position[2]=-2;source_position[2]=-1;}
+		// else if(oscillation>=1){oscillation=0;light_source.position[2]=-2;source_position[2]=-1;}
 	}
 	else if(event.keyCode == 32){
 		// Spacebar for jump
@@ -1404,7 +1427,7 @@ function handleKeyUp(event){
     }
 }
 
-function handleKeys(shapes, obstacles, light_source){
+function handleKeys(shapes, obstacles){
     if(pause){
         if(statusKeys[38]){
             // Up Key
@@ -1421,37 +1444,48 @@ function handleKeys(shapes, obstacles, light_source){
         }
         if(statusKeys[37]){
             // Left Key
-            var i = 0; 
-            while(i < count_shapes){
-                shapes[i].rotationZ += shapes[i].rotation;
-                i++;
-            }
-            i=0;
-            while(i < count_obstacles){
-                obstacles[i].rotationZ += shapes[0].rotation;
-                i++;
+            // var i = 0;
+            // if(camera.camera_position[0]==1.0)
+            // {
+            //     camera.camera_position[0]=0.0;
+            //     camera.camera_target[0]=0.0;
+            // }
+            // else if(camera.camera_position[0]==0.0)
+            // {
+            //     camera.camera_position[0]=-1.0;
+            //     camera.camera_target[0]=-1.0;
+            // }
+            if(camera.camera_position[0]>=-1.0)
+            {
+            camera.camera_position[0]-=0.025;
+            camera.camera_target[0]-=0.025;
             }
         }
         if(statusKeys[39]){
             // Right Key
             var i = 0;
-            while(i < count_shapes){
-                shapes[i].rotationZ -= shapes[i].rotation;
-                i++;
+            if(camera.camera_position[0]<=1.0)
+            {
+            camera.camera_target[0]+=0.025;
+            camera.camera_position[0]+=0.025;
             }
-            i=0;
-            while(i < count_obstacles){
-                obstacles[i].rotationZ -= shapes[0].rotation;
-                i++;
-            }
+            // if(camera.camera_position[0]==0.0)
+            // {
+            //     camera.camera_position[0]=1.0;
+            //     camera.camera_target[0]=1.0;
+            // }
+            // else if(camera.camera_position[0]==-1.0)
+            // {
+            //     camera.camera_position[0]=0.0;
+            //     camera.camera_target[0]=0.0;
+            // }
         }
-
     }
 }
 
 
 
-function refresh_tunnel(gl, shapes, buffers){
+function refresh_tunnel(gl, shapes, buffers,walls,bufferw){
     if(shapes.length && shapes[0].position[2] > 1){
         count_shapes--;
         buffers.shift();
@@ -1469,6 +1503,19 @@ function refresh_tunnel(gl, shapes, buffers){
         shapes[count_shapes - 1].rotationX = shapes[count_shapes - 2].rotationX;
         shapes[count_shapes - 1].rotationZ = shapes[count_shapes - 2].rotationZ;
         buffers.push(initBuffers(gl, shapes[count_shapes - 1]));
+    }
+    if(walls.length && walls[0].position[2] > 1){
+        count_walls--;
+        bufferw.shift();
+        walls.shift();
+
+        walls.push(create_wall());
+        count_walls++;
+        walls[count_walls - 1].position[2] = walls[count_walls - 2].position[2] - 2;
+        walls[count_walls - 1].rotationY = walls[count_walls - 2].rotationY;
+        walls[count_walls - 1].rotationX = walls[count_walls - 2].rotationX;
+        walls[count_walls - 1].rotationZ = walls[count_walls - 2].rotationZ;
+        bufferw.push(initBuffers(gl, walls[count_walls - 1]));
     }
 }
 
