@@ -8,10 +8,12 @@ var changeLighting = 0;
 var periodicRandom = 0;
 var oscillation = 0;
 var grayscale = 0; 
-
+var maxRotX=0.4;
+var inC=0.04;
 var max_level = 3;
 var level = 1;
-
+var curRotX=0;
+var manPos=1;
 var jump = 0;
 var pause = 1;
 var score = 0;
@@ -34,21 +36,25 @@ camera['camera_position'] = [0.0, 0.55, 1];
 camera['camera_target'] = [0.0, 0.5, -1.0];
 camera['camera_up'] = [0.0, 1.0, 0.0];
 var leg1;
-  var leg1_buffer;
-  var leg2;
-  var leg2_buffer;
-  var torso;
-  var torso_buffer;
-  var hand1;
-  var hand1_buffer;
-  var hand2;
-  var hand2_buffer;
-  var neck;
-  var neck_buffer;
-  var head;
-  var head_buffer;
-  var hair;
-  var hair_buffer;
+var shoe1;
+var shoe2;
+var leg1_buffer;
+var shoe1_buffer;
+var shoe2_buffer;
+var leg2;
+var leg2_buffer;
+var torso;
+var torso_buffer;
+var hand1;
+var hand1_buffer;
+var hand2;
+var hand2_buffer;
+var neck;
+var neck_buffer;
+var head;
+var head_buffer;
+var hair;
+var hair_buffer;
   
 var shaderProgram;
 var programInfo;
@@ -522,6 +528,347 @@ function create_coin(){
     
     return dict;
 }
+
+function create_shoe1(){
+	dict = {};
+	dict['position'] = [-0.175, -0.2, 0];
+	dict['radius'] = 1/Math.cos(halfAngle);
+    dict['positions'] = [
+        // Right face
+        0.061, 0.01, 0.052,
+        0.061, 0.01, -0.052,
+        0.061, -0.01, -0.052,
+        0.061, -0.01, 0.052,
+  
+        // Left face
+        -0.061, 0.01, 0.052,
+        -0.061, 0.01, -0.052,
+        -0.061, -0.01, -0.052,
+        -0.061, -0.01, 0.052,
+  
+        // Top faces
+        -0.061, 0.01, 0.052,
+        0.061, 0.01, 0.052,
+        0.061, 0.01, -0.052,
+        -0.061, 0.01, -0.052,
+  
+        // Bottom faces
+        -0.061, -0.01, 0.052,
+        0.061, -0.01, 0.052,
+        0.061, -0.01, -0.052,
+        -0.061, -0.01, -0.052,
+  
+        // Front face
+        -0.061, 0.01, 0.052,
+        0.061, 0.01, 0.052,
+        0.061, -0.01, 0.052,
+        -0.061, -0.01, 0.052,
+  
+        // Back face
+        -0.061, 0.01, -0.052,
+        0.061, 0.01, -0.052,
+        0.061, -0.01, -0.052,
+        -0.061, -0.01, -0.052,
+      ];
+  
+      dict['normals'] = [
+        // Right face
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+  
+        // Left face
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+  
+        // Top faces
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+  
+        // Bottom faces
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+  
+        // Front face
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+  
+        // Back face
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+      ];
+  
+      dict['textureCoordinates'] = [
+          // Front
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Back
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Top
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Bottom
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Right
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Left
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+      ];
+  
+  
+    if(level<=1 || grayscale)
+    {
+	    dict['faceColors'] = [
+	    //   [1.0,  1.0,  1.0,  1.0],    // Top face: white
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Left face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Bottom face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Right face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Right face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Top Right face: black
+	    ];
+	}
+	else
+	{
+    	dict['faceColors'] = [
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        //     [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
+	    ];		
+	}
+    dict['indices'] = [
+      0,  1,  2,      0,  2,  3,    // right
+      4,  5,  6,      4,  6,  7,    // right top
+      8,  9,  10,     8,  10, 11,   // top
+      12, 13, 14,     12, 14, 15,   // top left
+      16, 17, 18,     16, 18, 19,   // left
+      20, 21, 22,     20, 22, 23,   // bottom left
+    //   07, 25, 26,     07, 26, 27,   // bottom
+    //   28, 29, 30,     28, 30, 31,   // bottom right
+    ];
+    dict['rotationX'] = 0;
+    dict['rotationY'] = -0.24;
+    dict['rotationZ'] = -0.22;
+    dict['speed'] = 7;
+    dict['numComponentsPosition'] = 3;
+    dict['numComponentsColor'] = 4;
+    dict['vertexCount'] = 36;
+    dict['rotation'] = 0.05;
+    dict['category'] = 0;
+    
+    return dict;
+}
+
+function create_shoe2(){
+	dict = {};
+	dict['position'] = [0.175, -0.2, 0];
+	dict['radius'] = 1/Math.cos(halfAngle);
+    dict['positions'] = [
+        // Right face
+        0.061, 0.01, 0.052,
+        0.061, 0.01, -0.052,
+        0.061, -0.01, -0.052,
+        0.061, -0.01, 0.052,
+  
+        // Left face
+        -0.061, 0.01, 0.052,
+        -0.061, 0.01, -0.052,
+        -0.061, -0.01, -0.052,
+        -0.061, -0.01, 0.052,
+  
+        // Top faces
+        -0.061, 0.01, 0.052,
+        0.061, 0.01, 0.052,
+        0.061, 0.01, -0.052,
+        -0.061, 0.01, -0.052,
+  
+        // Bottom faces
+        -0.061, -0.01, 0.052,
+        0.061, -0.01, 0.052,
+        0.061, -0.01, -0.052,
+        -0.061, -0.01, -0.052,
+  
+        // Front face
+        -0.061, 0.01, 0.052,
+        0.061, 0.01, 0.052,
+        0.061, -0.01, 0.052,
+        -0.061, -0.01, 0.052,
+  
+        // Back face
+        -0.061, 0.01, -0.052,
+        0.061, 0.01, -0.052,
+        0.061, -0.01, -0.052,
+        -0.061, -0.01, -0.052,
+      ];
+  
+      dict['normals'] = [
+        // Right face
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+  
+        // Left face
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+  
+        // Top faces
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+  
+        // Bottom faces
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+  
+        // Front face
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+  
+        // Back face
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+      ];
+  
+      dict['textureCoordinates'] = [
+          // Front
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Back
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Top
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Bottom
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Right
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Left
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+      ];
+  
+  
+    if(level<=1 || grayscale)
+    {
+	    dict['faceColors'] = [
+	    //   [1.0,  1.0,  1.0,  1.0],    // Top face: white
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Left face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Bottom face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Right face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Right face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Top Right face: black
+	    ];
+	}
+	else
+	{
+    	dict['faceColors'] = [
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        //     [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
+	    ];		
+	}
+    dict['indices'] = [
+      0,  1,  2,      0,  2,  3,    // right
+      4,  5,  6,      4,  6,  7,    // right top
+      8,  9,  10,     8,  10, 11,   // top
+      12, 13, 14,     12, 14, 15,   // top left
+      16, 17, 18,     16, 18, 19,   // left
+      20, 21, 22,     20, 22, 23,   // bottom left
+    //   07, 25, 26,     07, 26, 27,   // bottom
+    //   28, 29, 30,     28, 30, 31,   // bottom right
+    ];
+    dict['rotationX'] = 0;
+    dict['rotationY'] = 0.24;
+    dict['rotationZ'] = 0.22;
+    dict['speed'] = 7;
+    dict['numComponentsPosition'] = 3;
+    dict['numComponentsColor'] = 4;
+    dict['vertexCount'] = 36;
+    dict['rotation'] = 0.05;
+    dict['category'] = 0;
+    
+    return dict;
+}
+
 
 function create_leg1(){
 	dict = {};
@@ -2475,23 +2822,29 @@ function main() {
 }
 // coins.push(create_coin());
 leg1=create_leg1();
-leg1.position[2]=-1;
+leg1.position[2]=-manPos;
+shoe1=create_shoe1();
+shoe1.position[2]=-manPos;
+shoe2=create_shoe2();
+shoe2.position[2]=-manPos;
 leg2=create_leg2();
-leg2.position[2]=-1;
+leg2.position[2]=-manPos;
 torso=create_torso();
-torso.position[2]=-1;
+torso.position[2]=-manPos;
 hand1=create_hand1();
-hand1.position[2]=-1;
+hand1.position[2]=-manPos;
 hand2=create_hand2();
-hand2.position[2]=-1;
+hand2.position[2]=-manPos;
 neck=create_neck();
-neck.position[2]=-1;
+neck.position[2]=-manPos;
 head=create_head();
-head.position[2]=-1;
+head.position[2]=-manPos;
 hair=create_hair();
-hair.position[2]=-1;
+hair.position[2]=-manPos;
 // coins[0].position[2]=-1;
 leg1_buffer=initBuffers(gl,leg1);
+shoe1_buffer=initBuffers(gl,shoe1);
+shoe2_buffer=initBuffers(gl,shoe2);
 leg2_buffer=initBuffers(gl,leg2);
 torso_buffer=initBuffers(gl,torso);
 hand1_buffer=initBuffers(gl,hand1);
@@ -2580,12 +2933,14 @@ hair_buffer=initBuffers(gl,hair);
 
     while(i < count_obstacles){
         // obstacles[i].position[0] = amplitude * Math.sin(2 * Math.PI * frames / 4);
-        drawScene(gl, projectionMatrix, obstacles[i], programInfo, buffer_obstacles[i], texture, deltaTime);
+        // drawScene(gl, projectionMatrix, obstacles[i], programInfo, buffer_obstacles[i], texture, deltaTime);
         i++;
     }
     // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
     drawScene(gl, projectionMatrix, leg1, programInfo, leg1_buffer, texture_leg, deltaTime);
+    drawScene(gl, projectionMatrix, shoe1, programInfo, shoe1_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, shoe2, programInfo, shoe1_buffer, texture_g, deltaTime);
     drawScene(gl, projectionMatrix, leg2, programInfo, leg2_buffer, texture_leg, deltaTime);
     drawScene(gl, projectionMatrix, hand1, programInfo, hand1_buffer, texture_hand, deltaTime);
     drawScene(gl, projectionMatrix, hand2, programInfo, hand2_buffer, texture_hand, deltaTime);
@@ -2605,6 +2960,35 @@ hair_buffer=initBuffers(gl,hair);
     now *= 0.001;  // convert to seconds
 
     const deltaTime = now - then;
+
+    if(inC>0)
+    {
+        if(curRotX>=maxRotX)
+        {
+            inC*=-1.0;
+        }
+        curRotX+=inC;
+        // hand1.rotationX=curRotX;
+        // hand2.rotationX=-curRotX;
+        leg1.rotationX=-curRotX;
+        shoe1.rotationX=-curRotX;
+        leg2.rotationX=curRotX;
+        shoe2.rotationX=curRotX;
+    }
+    else
+    {
+        if(curRotX<=-maxRotX)
+        {
+            inC*=-1.0;
+        }
+        curRotX+=inC;
+        // hand1.rotationX=curRotX;
+        // hand2.rotationX=-curRotX;
+        leg1.rotationX=-curRotX;
+        shoe1.rotationX=-curRotX;
+        leg2.rotationX=curRotX;
+        shoe2.rotationX=curRotX;        
+    }
 
     if(frames % level_frames == 0){
     	//console.log(level);
@@ -2760,11 +3144,13 @@ hair_buffer=initBuffers(gl,hair);
         if(frames<=500)obstacles[i].rotation = 0;
         obstacles[i].rotationZ += Math.ceil((level*4)/9) * pause * obstacles[i].rotation * deltaTime;
         
-        drawScene(gl, projectionMatrix, obstacles[i], programInfo, buffer_obstacles[i], texture, deltaTime);
+        // drawScene(gl, projectionMatrix, obstacles[i], programInfo, buffer_obstacles[i], texture, deltaTime);
         i++;
     }
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
     drawScene(gl, projectionMatrix, leg1, programInfo, leg1_buffer, texture_leg, deltaTime);
+    drawScene(gl, projectionMatrix, shoe1, programInfo, shoe1_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, shoe2, programInfo, shoe2_buffer, texture_g, deltaTime);
     drawScene(gl, projectionMatrix, leg2, programInfo, leg2_buffer, texture_leg, deltaTime);
     drawScene(gl, projectionMatrix, hand1, programInfo, hand1_buffer, texture_hand, deltaTime);
     drawScene(gl, projectionMatrix, hand2, programInfo, hand2_buffer, texture_hand, deltaTime);
@@ -2939,6 +3325,8 @@ function handleKeys(shapes, obstacles){
             camera.camera_target[0]-=0.025;
             leg1.position[0]-=0.025;
             leg2.position[0]-=0.025;
+            shoe2.position[0]-=0.025;
+            shoe1.position[0]-=0.025;
             torso.position[0]-=0.025;
             hand1.position[0]-=0.025;
             hand2.position[0]-=0.025;
@@ -2956,6 +3344,8 @@ function handleKeys(shapes, obstacles){
             camera.camera_position[0]+=0.025;
             leg1.position[0]+=0.025;
             leg2.position[0]+=0.025;
+            shoe2.position[0]+=0.025;
+            shoe1.position[0]+=0.025;
             torso.position[0]+=0.025;
             hand1.position[0]+=0.025;
             hand2.position[0]+=0.025;
