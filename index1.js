@@ -9,11 +9,13 @@ var periodicRandom = 0;
 var oscillation = 0;
 var grayscale = 0; 
 var maxRotX=0.4;
-var inC=0.04;
+var inC=0.08;
 var max_level = 3;
 var level = 1;
 var curRotX=0;
-var manPos=1;
+var manPos=1.8;
+var showPolice=0;
+var policePos=0.8;
 var jump = 0;
 var pause = 1;
 var score = 0;
@@ -35,29 +37,80 @@ var camera = {};
 camera['camera_position'] = [0.0, 0.55, 1];
 camera['camera_target'] = [0.0, 0.5, -1.0];
 camera['camera_up'] = [0.0, 1.0, 0.0];
-var leg1;
-var shoe1;
-var shoe2;
-var leg1_buffer;
-var shoe1_buffer;
-var shoe2_buffer;
-var leg2;
-var leg2_buffer;
-var torso;
-var torso_buffer;
-var hand1;
-var hand1_buffer;
-var hand2;
-var hand2_buffer;
-var neck;
-var neck_buffer;
-var head;
-var head_buffer;
-var hair;
-var hair_buffer;
-  
+var man_leg1;
+var man_shoe1;
+var man_shoe2;
+var man_leg1_buffer;
+var man_shoe1_buffer;
+var man_shoe2_buffer;
+var man_leg2;
+var man_leg2_buffer;
+var man_torso;
+var man_torso_buffer;
+var man_hand1;
+var man_hand1_buffer;
+var man_hand2;
+var man_hand2_buffer;
+var man_neck;
+var man_neck_buffer;
+var man_head;
+var man_head_buffer;
+var man_hair;
+var man_hair_buffer;
+
+var police_leg1;
+var police_shoe1;
+var police_shoe2;
+var police_leg1_buffer;
+var police_shoe1_buffer;
+var police_shoe2_buffer;
+var police_leg2;
+var police_leg2_buffer;
+var police_torso;
+var police_torso_buffer;
+var police_hand1;
+var police_hand1_buffer;
+var police_hand2;
+var police_hand2_buffer;
+var police_neck;
+var police_neck_buffer;
+var police_head;
+var police_head_buffer;
+var police_hair;
+var police_hair_buffer;
+var g_start=1;
+
 var shaderProgram;
 var programInfo;
+
+function noPolice()
+{
+    showPolice=0;
+    manPos=1.0;
+    man_leg1.position[2]=-manPos;
+    man_shoe1.position[2]=-manPos;
+    man_shoe2.position[2]=-manPos;
+    man_leg2.position[2]=-manPos;
+    man_torso.position[2]=-manPos;
+    man_hand1.position[2]=-manPos;
+    man_hand2.position[2]=-manPos;
+    man_neck.position[2]=-manPos;
+    man_head.position[2]=-manPos;
+    man_hair.position[2]=-manPos;
+
+}
+function showPol()
+{
+    console.log("Called");
+    if(showPolice==1)
+    {
+        pause=0;
+    }
+    manPos=1.8;
+    // policePos=0.5;
+    showPolice=1;
+    setTimeout(noPolice,4000);
+}
 
 function hoverMouse(event){
     // console.log(event.clientX);
@@ -2821,38 +2874,81 @@ function main() {
   i++;
 }
 // coins.push(create_coin());
-leg1=create_leg1();
-leg1.position[2]=-manPos;
-shoe1=create_shoe1();
-shoe1.position[2]=-manPos;
-shoe2=create_shoe2();
-shoe2.position[2]=-manPos;
-leg2=create_leg2();
-leg2.position[2]=-manPos;
-torso=create_torso();
-torso.position[2]=-manPos;
-hand1=create_hand1();
-hand1.position[2]=-manPos;
-hand2=create_hand2();
-hand2.position[2]=-manPos;
-neck=create_neck();
-neck.position[2]=-manPos;
-head=create_head();
-head.position[2]=-manPos;
-hair=create_hair();
-hair.position[2]=-manPos;
+man_leg1=create_leg1();
+man_leg1.position[2]=-manPos;
+man_shoe1=create_shoe1();
+man_shoe1.position[2]=-manPos;
+man_shoe2=create_shoe2();
+man_shoe2.position[2]=-manPos;
+man_leg2=create_leg2();
+man_leg2.position[2]=-manPos;
+man_torso=create_torso();
+man_torso.position[2]=-manPos;
+man_hand1=create_hand1();
+man_hand1.position[2]=-manPos;
+man_hand2=create_hand2();
+man_hand2.position[2]=-manPos;
+man_neck=create_neck();
+man_neck.position[2]=-manPos;
+man_head=create_head();
+man_head.position[2]=-manPos;
+man_hair=create_hair();
+man_hair.position[2]=-manPos;
 // coins[0].position[2]=-1;
-leg1_buffer=initBuffers(gl,leg1);
-shoe1_buffer=initBuffers(gl,shoe1);
-shoe2_buffer=initBuffers(gl,shoe2);
-leg2_buffer=initBuffers(gl,leg2);
-torso_buffer=initBuffers(gl,torso);
-hand1_buffer=initBuffers(gl,hand1);
-hand2_buffer=initBuffers(gl,hand2);
-neck_buffer=initBuffers(gl,neck);
-head_buffer=initBuffers(gl,head);
-hair_buffer=initBuffers(gl,hair);
+man_leg1_buffer=initBuffers(gl,man_leg1);
+man_shoe1_buffer=initBuffers(gl,man_shoe1);
+man_shoe2_buffer=initBuffers(gl,man_shoe2);
+man_leg2_buffer=initBuffers(gl,man_leg2);
+man_torso_buffer=initBuffers(gl,man_torso);
+man_hand1_buffer=initBuffers(gl,man_hand1);
+man_hand2_buffer=initBuffers(gl,man_hand2);
+man_neck_buffer=initBuffers(gl,man_neck);
+man_head_buffer=initBuffers(gl,man_head);
+man_hair_buffer=initBuffers(gl,man_hair);
 // buffer_coins.push(initBuffers(gl,coins[0]));
+
+police_leg1=create_leg1();
+police_leg1.position[2]=-policePos;
+police_leg1.position[0]+=0.5;
+police_shoe1=create_shoe1();
+police_shoe1.position[2]=-policePos;
+police_shoe1.position[0]+=0.5;
+police_shoe2=create_shoe2();
+police_shoe2.position[2]=-policePos;
+police_shoe2.position[0]+=0.5;
+police_leg2=create_leg2();
+police_leg2.position[2]=-policePos;
+police_leg2.position[0]+=0.5;
+police_torso=create_torso();
+police_torso.position[2]=-policePos;
+police_torso.position[0]+=0.5;
+police_hand1=create_hand1();
+police_hand1.position[2]=-policePos;
+police_hand1.position[0]+=0.5;
+police_hand2=create_hand2();
+police_hand2.position[2]=-policePos;
+police_hand2.position[0]+=0.5;
+police_neck=create_neck();
+police_neck.position[2]=-policePos;
+police_neck.position[0]+=0.5;
+police_head=create_head();
+police_head.position[2]=-policePos;
+police_head.position[0]+=0.5;
+police_hair=create_hair();
+police_hair.position[2]=-policePos;
+police_hair.position[0]+=0.5;
+// coins[0].position[2]=-1;
+police_leg1_buffer=initBuffers(gl,police_leg1);
+police_shoe1_buffer=initBuffers(gl,police_shoe1);
+police_shoe2_buffer=initBuffers(gl,police_shoe2);
+police_leg2_buffer=initBuffers(gl,police_leg2);
+police_torso_buffer=initBuffers(gl,police_torso);
+police_hand1_buffer=initBuffers(gl,police_hand1);
+police_hand2_buffer=initBuffers(gl,police_hand2);
+police_neck_buffer=initBuffers(gl,police_neck);
+police_head_buffer=initBuffers(gl,police_head);
+police_hair_buffer=initBuffers(gl,police_hair);
+
 
   i=0;
   while(i<count_obstacles)
@@ -2883,12 +2979,22 @@ hair_buffer=initBuffers(gl,hair);
   const texture_g2 = loadTexture(gl, 'texture-g2.jpg');
   const texture_w = loadTexture(gl, 'wall.png');
   const texture_g = loadTexture(gl, 'gold-tex-1.jpg');
-  const texture_leg = loadTexture(gl, 'jeans.jpeg');
-  const texture_torso = loadTexture(gl, 'torso.jpeg');
-  const texture_hand = loadTexture(gl, 'hand.jpeg');
-  const texture_neck = loadTexture(gl, 'neck.jpeg');
-  const texture_head = loadTexture(gl, 'head.jpeg');
-  const texture_hair = loadTexture(gl, 'hair.jpeg');
+  const texture_man_leg = loadTexture(gl, 'jeans.jpeg');
+  const texture_man_torso = loadTexture(gl, 'torso.jpeg');
+  const texture_man_hand = loadTexture(gl, 'hand.jpeg');
+  const texture_man_neck = loadTexture(gl, 'neck.jpeg');
+  const texture_man_head = loadTexture(gl, 'head.jpeg');
+  const texture_man_hair = loadTexture(gl, 'hair.jpeg');
+
+  const texture_police_leg = loadTexture(gl, 'police_pant.png');
+  const texture_police_torso = loadTexture(gl, 'police_torso.png');
+  const texture_police_hand = texture_police_leg;
+  const texture_police_neck = loadTexture(gl, 'neck.jpeg');
+  const texture_police_head = loadTexture(gl, 'police_hair.jpeg');
+  const texture_police_hair = loadTexture(gl, 'police_hair_1.jpeg');
+  const texture_police_shoe = loadTexture(gl, 'shoe.png');
+  
+
 
   var then = 0;
   var theta = 0;
@@ -2900,7 +3006,6 @@ hair_buffer=initBuffers(gl,hair);
   // Draw the scene repeatedly
   function shakey_screen(now) {
     const projectionMatrix = clearScene(gl);
-
     now *= 0.001;  // convert to seconds
     frames++;
     
@@ -2938,23 +3043,42 @@ hair_buffer=initBuffers(gl,hair);
     }
     // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, leg1, programInfo, leg1_buffer, texture_leg, deltaTime);
-    drawScene(gl, projectionMatrix, shoe1, programInfo, shoe1_buffer, texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, shoe2, programInfo, shoe1_buffer, texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, leg2, programInfo, leg2_buffer, texture_leg, deltaTime);
-    drawScene(gl, projectionMatrix, hand1, programInfo, hand1_buffer, texture_hand, deltaTime);
-    drawScene(gl, projectionMatrix, hand2, programInfo, hand2_buffer, texture_hand, deltaTime);
-    drawScene(gl, projectionMatrix, torso, programInfo, torso_buffer, texture_torso, deltaTime);
-    drawScene(gl, projectionMatrix, neck, programInfo, neck_buffer, texture_neck, deltaTime);
-    drawScene(gl, projectionMatrix, head, programInfo, head_buffer, texture_head, deltaTime);
-    drawScene(gl, projectionMatrix, hair, programInfo, hair_buffer, texture_hair, deltaTime);
+    drawScene(gl, projectionMatrix, man_leg1, programInfo, man_leg1_buffer, texture_man_leg, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, man_leg2, programInfo, man_leg2_buffer, texture_man_leg, deltaTime);
+    drawScene(gl, projectionMatrix, man_hand1, programInfo, man_hand1_buffer, texture_man_hand, deltaTime);
+    drawScene(gl, projectionMatrix, man_hand2, programInfo, man_hand2_buffer, texture_man_hand, deltaTime);
+    drawScene(gl, projectionMatrix, man_torso, programInfo, man_torso_buffer, texture_man_torso, deltaTime);
+    drawScene(gl, projectionMatrix, man_neck, programInfo, man_neck_buffer, texture_man_neck, deltaTime);
+    drawScene(gl, projectionMatrix, man_head, programInfo, man_head_buffer, texture_man_head, deltaTime);
+    drawScene(gl, projectionMatrix, man_hair, programInfo, man_hair_buffer, texture_man_hair, deltaTime);
+
+    if(showPolice)
+    {
+        drawScene(gl, projectionMatrix, police_leg1, programInfo, police_leg1_buffer, texture_police_leg, deltaTime);
+        drawScene(gl, projectionMatrix, police_shoe1, programInfo, police_shoe1_buffer, texture_police_shoe, deltaTime);
+        drawScene(gl, projectionMatrix, police_shoe2, programInfo, police_shoe1_buffer, texture_police_shoe, deltaTime);
+        drawScene(gl, projectionMatrix, police_leg2, programInfo, police_leg2_buffer, texture_police_leg, deltaTime);
+        drawScene(gl, projectionMatrix, police_hand1, programInfo, police_hand1_buffer, texture_police_hand, deltaTime);
+        drawScene(gl, projectionMatrix, police_hand2, programInfo, police_hand2_buffer, texture_police_hand, deltaTime);
+        drawScene(gl, projectionMatrix, police_torso, programInfo, police_torso_buffer, texture_police_torso, deltaTime);
+        drawScene(gl, projectionMatrix, police_neck, programInfo, police_neck_buffer, texture_police_neck, deltaTime);
+        drawScene(gl, projectionMatrix, police_head, programInfo, police_head_buffer, texture_police_head, deltaTime);
+        drawScene(gl, projectionMatrix, police_hair, programInfo, police_hair_buffer, texture_police_hair, deltaTime);
+    }
 
     requestAnimationFrame(shakey_screen);
   }
 
   // Draw the scene repeatedly
   function render(now) {
-    
+    if(g_start)
+    {
+        showPol();
+        g_start=0;
+    }
+
     if(pause)
       frames++;
     now *= 0.001;  // convert to seconds
@@ -2968,12 +3092,18 @@ hair_buffer=initBuffers(gl,hair);
             inC*=-1.0;
         }
         curRotX+=inC;
-        // hand1.rotationX=curRotX;
-        // hand2.rotationX=-curRotX;
-        leg1.rotationX=-curRotX;
-        shoe1.rotationX=-curRotX;
-        leg2.rotationX=curRotX;
-        shoe2.rotationX=curRotX;
+        // man_hand1.rotationX=curRotX;
+        // man_hand2.rotationX=-curRotX;
+        // man_leg1.rotationX=-curRotX;
+        man_shoe1.rotationX=-curRotX;
+        // man_leg2.rotationX=curRotX;
+        man_shoe2.rotationX=curRotX;
+
+        // police_leg1.rotationX=-curRotX;
+        police_shoe1.rotationX=-curRotX;
+        // police_leg2.rotationX=curRotX;
+        police_shoe2.rotationX=curRotX;
+
     }
     else
     {
@@ -2982,12 +3112,18 @@ hair_buffer=initBuffers(gl,hair);
             inC*=-1.0;
         }
         curRotX+=inC;
-        // hand1.rotationX=curRotX;
-        // hand2.rotationX=-curRotX;
-        leg1.rotationX=-curRotX;
-        shoe1.rotationX=-curRotX;
-        leg2.rotationX=curRotX;
-        shoe2.rotationX=curRotX;        
+        // man_hand1.rotationX=curRotX;
+        // man_hand2.rotationX=-curRotX;
+        // man_leg1.rotationX=-curRotX;
+        man_shoe1.rotationX=-curRotX;
+        // man_leg2.rotationX=curRotX;
+        man_shoe2.rotationX=curRotX;        
+
+        // police_leg1.rotationX=-curRotX;
+        police_shoe1.rotationX=-curRotX;
+        // police_leg2.rotationX=curRotX;
+        police_shoe2.rotationX=curRotX;        
+
     }
 
     if(frames % level_frames == 0){
@@ -3148,17 +3284,30 @@ hair_buffer=initBuffers(gl,hair);
         i++;
     }
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, leg1, programInfo, leg1_buffer, texture_leg, deltaTime);
-    drawScene(gl, projectionMatrix, shoe1, programInfo, shoe1_buffer, texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, shoe2, programInfo, shoe2_buffer, texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, leg2, programInfo, leg2_buffer, texture_leg, deltaTime);
-    drawScene(gl, projectionMatrix, hand1, programInfo, hand1_buffer, texture_hand, deltaTime);
-    drawScene(gl, projectionMatrix, hand2, programInfo, hand2_buffer, texture_hand, deltaTime);
-    drawScene(gl, projectionMatrix, torso, programInfo, torso_buffer, texture_torso, deltaTime);
-    drawScene(gl, projectionMatrix, neck, programInfo, neck_buffer, texture_neck, deltaTime);
-    drawScene(gl, projectionMatrix, head, programInfo, head_buffer, texture_head, deltaTime);
-    drawScene(gl, projectionMatrix, hair, programInfo, hair_buffer, texture_hair, deltaTime);
+    drawScene(gl, projectionMatrix, man_leg1, programInfo, man_leg1_buffer, texture_man_leg, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe2_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, man_leg2, programInfo, man_leg2_buffer, texture_man_leg, deltaTime);
+    drawScene(gl, projectionMatrix, man_hand1, programInfo, man_hand1_buffer, texture_man_hand, deltaTime);
+    drawScene(gl, projectionMatrix, man_hand2, programInfo, man_hand2_buffer, texture_man_hand, deltaTime);
+    drawScene(gl, projectionMatrix, man_torso, programInfo, man_torso_buffer, texture_man_torso, deltaTime);
+    drawScene(gl, projectionMatrix, man_neck, programInfo, man_neck_buffer, texture_man_neck, deltaTime);
+    drawScene(gl, projectionMatrix, man_head, programInfo, man_head_buffer, texture_man_head, deltaTime);
+    drawScene(gl, projectionMatrix, man_hair, programInfo, man_hair_buffer, texture_man_hair, deltaTime);
 
+    if(showPolice)
+    {
+    drawScene(gl, projectionMatrix, police_leg1, programInfo, police_leg1_buffer, texture_police_leg, deltaTime);
+    drawScene(gl, projectionMatrix, police_shoe1, programInfo, police_shoe1_buffer, texture_police_shoe, deltaTime);
+    drawScene(gl, projectionMatrix, police_shoe2, programInfo, police_shoe1_buffer, texture_police_shoe, deltaTime);
+    drawScene(gl, projectionMatrix, police_leg2, programInfo, police_leg2_buffer, texture_police_leg, deltaTime);
+    drawScene(gl, projectionMatrix, police_hand1, programInfo, police_hand1_buffer, texture_police_hand, deltaTime);
+    drawScene(gl, projectionMatrix, police_hand2, programInfo, police_hand2_buffer, texture_police_hand, deltaTime);
+    drawScene(gl, projectionMatrix, police_torso, programInfo, police_torso_buffer, texture_police_torso, deltaTime);
+    drawScene(gl, projectionMatrix, police_neck, programInfo, police_neck_buffer, texture_police_neck, deltaTime);
+    drawScene(gl, projectionMatrix, police_head, programInfo, police_head_buffer, texture_police_head, deltaTime);
+    drawScene(gl, projectionMatrix, police_hair, programInfo, police_hair_buffer, texture_police_hair, deltaTime);
+    }
     //light_source.position[2] += pause * light_source.speed * deltaTime;
     // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
 
@@ -3323,17 +3472,31 @@ function handleKeys(shapes, obstacles){
             {
             camera.camera_position[0]-=0.025;
             camera.camera_target[0]-=0.025;
-            leg1.position[0]-=0.025;
-            leg2.position[0]-=0.025;
-            shoe2.position[0]-=0.025;
-            shoe1.position[0]-=0.025;
-            torso.position[0]-=0.025;
-            hand1.position[0]-=0.025;
-            hand2.position[0]-=0.025;
-            neck.position[0]-=0.025;
-            head.position[0]-=0.025;
-            hair.position[0]-=0.025;
+            man_leg1.position[0]-=0.025;
+            man_leg2.position[0]-=0.025;
+            man_shoe2.position[0]-=0.025;
+            man_shoe1.position[0]-=0.025;
+            man_torso.position[0]-=0.025;
+            man_hand1.position[0]-=0.025;
+            man_hand2.position[0]-=0.025;
+            man_neck.position[0]-=0.025;
+            man_head.position[0]-=0.025;
+            man_hair.position[0]-=0.025;
+            // }
+            // if(police_torso.position[0]>=-1.0)
+            // {
+            police_leg1.position[0]-=0.025;
+            police_leg2.position[0]-=0.025;
+            police_shoe2.position[0]-=0.025;
+            police_shoe1.position[0]-=0.025;
+            police_torso.position[0]-=0.025;
+            police_hand1.position[0]-=0.025;
+            police_hand2.position[0]-=0.025;
+            police_neck.position[0]-=0.025;
+            police_head.position[0]-=0.025;
+            police_hair.position[0]-=0.025;
             }
+
         }
         if(statusKeys[39]){
             // Right Key
@@ -3342,16 +3505,29 @@ function handleKeys(shapes, obstacles){
             {
             camera.camera_target[0]+=0.025;
             camera.camera_position[0]+=0.025;
-            leg1.position[0]+=0.025;
-            leg2.position[0]+=0.025;
-            shoe2.position[0]+=0.025;
-            shoe1.position[0]+=0.025;
-            torso.position[0]+=0.025;
-            hand1.position[0]+=0.025;
-            hand2.position[0]+=0.025;
-            neck.position[0]+=0.025;
-            head.position[0]+=0.025;
-            hair.position[0]+=0.025;
+            man_leg1.position[0]+=0.025;
+            man_leg2.position[0]+=0.025;
+            man_shoe2.position[0]+=0.025;
+            man_shoe1.position[0]+=0.025;
+            man_torso.position[0]+=0.025;
+            man_hand1.position[0]+=0.025;
+            man_hand2.position[0]+=0.025;
+            man_neck.position[0]+=0.025;
+            man_head.position[0]+=0.025;
+            man_hair.position[0]+=0.025;
+            // }
+            // if(police_torso.position[0]<=1.0)
+            // {
+            police_leg1.position[0]+=0.025;
+            police_leg2.position[0]+=0.025;
+            police_shoe2.position[0]+=0.025;
+            police_shoe1.position[0]+=0.025;
+            police_torso.position[0]+=0.025;
+            police_hand1.position[0]+=0.025;
+            police_hand2.position[0]+=0.025;
+            police_neck.position[0]+=0.025;
+            police_head.position[0]+=0.025;
+            police_hair.position[0]+=0.025;
             }
             // if(camera.camera_position[0]==0.0)
             // {
@@ -3668,8 +3844,8 @@ function drawScene(gl, projectionMatrix, shape, programInfo, buffers, texture, d
 	    const numComponents = 2; // every coordinate composed of 2 values
 	    const type = gl.FLOAT; // the data in the buffer is 32 bit float
 	    const normalize = false; // don't normalize
-	    const stride = 0; // how leg1y bytes to get from one set to the next
-	    const offset = 0; // how leg1y bytes inside the buffer to start from
+	    const stride = 0; // how man_leg1y bytes to get from one set to the next
+	    const offset = 0; // how man_leg1y bytes inside the buffer to start from
 	    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
 	    gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, numComponents, type, normalize, stride, offset);
 	    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
