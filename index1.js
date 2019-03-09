@@ -2,6 +2,7 @@ var count_shapes = 15;
 var count_walls = 15;
 var count_obstacles = 1;
 var count_type_obstacles = 2;
+var count_coins=0;
 var colour = 0;
 var lastFrames = -1;
 var changeLighting = 0;
@@ -414,7 +415,7 @@ function create_wall(){
 
 function create_coin(){
 	dict = {};
-	dict['position'] = [0, -0.15, 0];
+	dict['position'] = [0, 0.05, 0];
 	dict['radius'] = 1/Math.cos(halfAngle);
     dict['positions'] = [
         // Right face
@@ -2862,6 +2863,18 @@ function main() {
         shapes.push(create_octagon0());
         // shapes.push(create_wall());
       shapes[i].position[2] = -2*i;
+      if(Math.floor(Math.random()*3)==0)
+      {
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i-0.5;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i-1.0;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+      }
       buffer_shapes.push(initBuffers(gl, shapes[i]));
       i++;
   }
@@ -2869,7 +2882,7 @@ function main() {
   while(i < count_walls){
     walls.push(create_wall());
     // shapes.push(create_wall());
-  walls[i].position[2] = -2;
+  walls[i].position[2] = -2*i;
   buffer_walls.push(initBuffers(gl, walls[i]));
   i++;
 }
@@ -3028,6 +3041,12 @@ police_hair_buffer=initBuffers(gl,police_hair);
         i++;
     }
     i=0;
+    while(i<coins.length)
+    {
+        drawScene(gl, projectionMatrix, coins[i], programInfo, buffer_coins[i], texture_g, deltaTime);
+        i++;
+    }
+    i=0;
     while(i<count_walls)
     {
         drawScene(gl, projectionMatrix, walls[i], programInfo, buffer_walls[i], texture_w, deltaTime);
@@ -3133,7 +3152,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     print_data(deltaTime);
 
     then = now;
-    refresh_tunnel(gl, shapes, buffer_shapes,walls,buffer_walls);
+    refresh_tunnel(gl, shapes, buffer_shapes,walls,buffer_walls,coins,buffer_coins);
     refresh_obstacles(gl, obstacles, buffer_obstacles);
     handleKeys(shapes, obstacles);
 
@@ -3286,6 +3305,14 @@ police_hair_buffer=initBuffers(gl,police_hair);
         		drawScene(gl, projectionMatrix, shapes[i], programInfo, buffer_shapes[i], texture_g2, deltaTime);
         i++;
     }
+    i=0;
+    while(i<coins.length)
+    {
+        coins[i].position[2] += pause * coins[i].speed * deltaTime;
+        drawScene(gl, projectionMatrix, coins[i], programInfo, buffer_coins[i], texture_g, deltaTime);
+        i++;
+    }
+
     i=0;
     while(i < count_walls){
         walls[i].position[2] += pause * walls[i].speed * deltaTime;
@@ -3565,7 +3592,7 @@ function handleKeys(shapes, obstacles){
 
 
 
-function refresh_tunnel(gl, shapes, buffers,walls,bufferw){
+function refresh_tunnel(gl, shapes, buffers,walls,bufferw,coins,bufferc){
     if(shapes.length && shapes[0].position[2] > 1){
         count_shapes--;
         buffers.shift();
@@ -3596,6 +3623,18 @@ function refresh_tunnel(gl, shapes, buffers,walls,bufferw){
         walls[count_walls - 1].rotationX = walls[count_walls - 2].rotationX;
         walls[count_walls - 1].rotationZ = walls[count_walls - 2].rotationZ;
         bufferw.push(initBuffers(gl, walls[count_walls - 1]));
+    }
+    if(coins.length && coins[0].position[2] > 1){
+        bufferc.shift();
+        coins.shift();
+
+        coins.push(create_coin());
+        // count_walls++;
+        coins[coins.length - 1].position[2] = coins[coins.length - 2].position[2] - 2;
+        // coins[coins.length - 1].rotationY = coins[coins.length - 2].rotationY;
+        // coins[coins.length - 1].rotationX = coins[coins.length - 2].rotationX;
+        // coins[coins.length - 1].rotationZ = coins[coins.length - 2].rotationZ;
+        bufferc.push(initBuffers(gl, coins[coins.length - 1]));
     }
 }
 
