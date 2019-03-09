@@ -23,7 +23,7 @@ var frames = 0;
 var gravity = -1;
 var current_rotation = 0;
 var halfAngle = Math.PI/8;
-
+var maxHeight=-0.75;
 // source initialization
 
 var ambient_factor = 5;
@@ -3197,7 +3197,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     	var i=0;
     	while(i < count_shapes)
     	{
-    		if(shapes[i].position[1] > -0.25)
+    		if(shapes[i].position[1] >= maxHeight)
     		{
     			shapes[i].position[1] -= 0.02;	
     		}
@@ -3206,11 +3206,21 @@ police_hair_buffer=initBuffers(gl,police_hair);
     	i=0;
     	while(i < count_obstacles)
     	{
-    		if(obstacles[i].position[1] > -0.25)
+    		if(obstacles[i].position[1] >= maxHeight)
     		{
     			obstacles[i].position[1] -= 0.02;	
     		}
     		else if(i==count_obstacles-1)jump=2;
+    		i++;
+    	}
+    	i=0;
+    	while(i < count_walls)
+    	{
+    		if(walls[i].position[1] >= maxHeight)
+    		{
+    			walls[i].position[1] -= 0.02;	
+    		}
+    		// else if(i==count_walls-1)jump=2;
     		i++;
     	}
     	// if(light_source.position[1] > -0.4)
@@ -3225,7 +3235,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     	var i=0;
     	while(i < count_shapes)
     	{
-    		if(shapes[i].position[1] < 0.25)
+    		if(shapes[i].position[1] < -0.25)
     		{
     			shapes[i].position[1] += 0.02;	
     		}
@@ -3235,11 +3245,21 @@ police_hair_buffer=initBuffers(gl,police_hair);
     	i=0;
     	while(i < count_obstacles)
     	{
-    		if(obstacles[i].position[1] < 0.25)
+    		if(obstacles[i].position[1] < -0.25)
     		{
     			obstacles[i].position[1] += 0.02;	
     		}
     		else if(i==count_obstacles-1)jump=0;
+    		i++;
+        }
+        i=0;
+    	while(i < count_walls)
+    	{
+    		if(walls[i].position[1] < -0.25)
+    		{
+    			walls[i].position[1] += 0.02;	
+    		}
+    		// else if(i==count_walls-1)jump=0;
     		i++;
     	}
     	// if(light_source.position[1] < 0.0)
