@@ -11,7 +11,7 @@ var oscillation = 0;
 var grayscale = 0; 
 var maxRotX=0.4;
 var inC=0.08;
-var max_level = 3;
+var max_level = 1;
 var level = 1;
 var curRotX=0;
 var manPos=1.8;
@@ -24,7 +24,9 @@ var frames = 0;
 var gravity = -1;
 var current_rotation = 0;
 var halfAngle = Math.PI/8;
-var maxHeight=-0.75;
+var maxHeight=1.1;
+var x_positions=[-1,0,1];
+var maxCoins=0;
 // source initialization
 
 var ambient_factor = 5;
@@ -2875,9 +2877,40 @@ function main() {
           coins[coins.length-1].position[2]=-2*i-1.0;
           buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
       }
+      if(Math.floor(Math.random()*3)==0)
+      {
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i;
+          coins[coins.length-1].position[0]=-1;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i-0.5;
+          coins[coins.length-1].position[0]=-1;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i-1.0;
+          coins[coins.length-1].position[0]=-1;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+      }
+      if(Math.floor(Math.random()*3)==0)
+      {
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i;
+          coins[coins.length-1].position[0]=1;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i-0.5;
+          coins[coins.length-1].position[0]=1;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+          coins.push(create_coin());
+          coins[coins.length-1].position[2]=-2*i-1.0;
+          coins[coins.length-1].position[0]=1;
+          buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+      }
       buffer_shapes.push(initBuffers(gl, shapes[i]));
       i++;
   }
+  maxCoins=coins.length+3;
   i=0;
   while(i < count_walls){
     walls.push(create_wall());
@@ -2991,13 +3024,14 @@ police_hair_buffer=initBuffers(gl,police_hair);
   const texture_g1 = loadTexture(gl, 'texture-g1.jpg');
   const texture_g2 = loadTexture(gl, 'texture-g2.jpg');
   const texture_w = loadTexture(gl, 'wall.png');
-  const texture_g = loadTexture(gl, 'gold-tex-1.jpg');
+  const texture_g = loadTexture(gl, 'coins-3.png');
   const texture_man_leg = loadTexture(gl, 'jeans.jpeg');
   const texture_man_torso = loadTexture(gl, 'torso.jpeg');
   const texture_man_hand = loadTexture(gl, 'hand.jpeg');
   const texture_man_neck = loadTexture(gl, 'neck.jpeg');
   const texture_man_head = loadTexture(gl, 'head.jpeg');
   const texture_man_hair = loadTexture(gl, 'hair.jpeg');
+  const texture_man_shoes = loadTexture(gl, 'gold-tex-1.jpg');
 
   const texture_police_leg = loadTexture(gl, 'police_pant.png');
   const texture_police_torso = loadTexture(gl, 'police_torso.png');
@@ -3063,8 +3097,8 @@ police_hair_buffer=initBuffers(gl,police_hair);
     // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
     drawScene(gl, projectionMatrix, man_leg1, programInfo, man_leg1_buffer, texture_man_leg, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
     drawScene(gl, projectionMatrix, man_leg2, programInfo, man_leg2_buffer, texture_man_leg, deltaTime);
     drawScene(gl, projectionMatrix, man_hand1, programInfo, man_hand1_buffer, texture_man_hand, deltaTime);
     drawScene(gl, projectionMatrix, man_hand2, programInfo, man_hand2_buffer, texture_man_hand, deltaTime);
@@ -3104,7 +3138,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
 
     const deltaTime = now - then;
 
-    if(inC>0)
+    if(inC>0 && pause)
     {
         if(curRotX>=maxRotX)
         {
@@ -3124,7 +3158,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
         police_shoe2.rotationX=curRotX;
 
     }
-    else
+    else if(pause)
     {
         if(curRotX<=-maxRotX)
         {
@@ -3147,7 +3181,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
 
     if(frames % level_frames == 0){
     	//console.log(level);
-        level = Math.min(level + 1, max_level);
+        // level = Math.min(level + 1, max_level);
     }
     print_data(deltaTime);
 
@@ -3213,80 +3247,142 @@ police_hair_buffer=initBuffers(gl,police_hair);
 
     if(jump==1)
     {
-    	var i=0;
-    	while(i < count_shapes)
-    	{
-    		if(shapes[i].position[1] >= maxHeight)
-    		{
-    			shapes[i].position[1] -= 0.02;	
-    		}
-    		i++;
-    	}
-    	i=0;
-    	while(i < count_obstacles)
-    	{
-    		if(obstacles[i].position[1] >= maxHeight)
-    		{
-    			obstacles[i].position[1] -= 0.02;	
-    		}
-    		else if(i==count_obstacles-1)jump=2;
-    		i++;
-    	}
-    	i=0;
-    	while(i < count_walls)
-    	{
-    		if(walls[i].position[1] >= maxHeight)
-    		{
-    			walls[i].position[1] -= 0.02;	
-    		}
-    		// else if(i==count_walls-1)jump=2;
-    		i++;
-    	}
-    	// if(light_source.position[1] > -0.4)
+        if(man_head.position[1]<=maxHeight)
+        {
+            man_hair.position[1]+=0.02;
+            man_head.position[1]+=0.02;
+            man_neck.position[1]+=0.02;
+            man_torso.position[1]+=0.02;
+            man_hand1.position[1]+=0.02;
+            man_hand2.position[1]+=0.02;
+            man_leg1.position[1]+=0.02;
+            man_leg2.position[1]+=0.02;
+            man_shoe1.position[1]+=0.02;
+            man_shoe2.position[1]+=0.02;
+        }
+        else
+        {
+            jump=2;
+        }
+    	// var i=0;
+    	// while(i < count_shapes)
     	// {
-    	// 	//light_source.position[1] -= 0.05;
-    	// 	//source_position -= 0.05;	
+    	// 	if(shapes[i].position[1] >= maxHeight)
+    	// 	{
+    	// 		shapes[i].position[1] -= 0.02;	
+    	// 	}
+    	// 	i++;
     	// }
+    	// i=0;
+    	// while(i < count_obstacles)
+    	// {
+    	// 	if(obstacles[i].position[1] >= maxHeight)
+    	// 	{
+    	// 		obstacles[i].position[1] -= 0.02;	
+    	// 	}
+    	// 	else if(i==count_obstacles-1)jump=2;
+    	// 	i++;
+    	// }
+    	// i=0;
+    	// while(i < count_walls)
+    	// {
+    	// 	if(walls[i].position[1] >= maxHeight)
+    	// 	{
+    	// 		walls[i].position[1] -= 0.02;	
+    	// 	}
+    	// 	// else if(i==count_walls-1)jump=2;
+    	// 	i++;
+    	// }
+    	// i=0;
+    	// while(i < coins.length)
+    	// {
+    	// 	if(coins[i].position[1] - 0.3 >= maxHeight)
+    	// 	{
+    	// 		coins[i].position[1] -= 0.02;
+    	// 	}
+    	// 	// else if(i==count_walls-1)jump=2;
+    	// 	i++;
+    	// }
+    	// // if(light_source.position[1] > -0.4)
+    	// // {
+    	// // 	//light_source.position[1] -= 0.05;
+    	// // 	//source_position -= 0.05;	
+    	// // }
     	
     }
     else if(jump==2)
     {
-    	var i=0;
-    	while(i < count_shapes)
-    	{
-    		if(shapes[i].position[1] < -0.25)
-    		{
-    			shapes[i].position[1] += 0.02;	
-    		}
-    		i++;
-    	}
-
-    	i=0;
-    	while(i < count_obstacles)
-    	{
-    		if(obstacles[i].position[1] < -0.25)
-    		{
-    			obstacles[i].position[1] += 0.02;	
-    		}
-    		else if(i==count_obstacles-1)jump=0;
-    		i++;
+        if(man_head.position[1]>=0.57)
+        {
+            man_hair.position[1]-=0.02;
+            man_head.position[1]-=0.02;
+            man_neck.position[1]-=0.02;
+            man_torso.position[1]-=0.02;
+            man_hand1.position[1]-=0.02;
+            man_hand2.position[1]-=0.02;
+            man_leg1.position[1]-=0.02;
+            man_leg2.position[1]-=0.02;
+            man_shoe1.position[1]-=0.02;
+            man_shoe2.position[1]-=0.02;
         }
-        i=0;
-    	while(i < count_walls)
-    	{
-    		if(walls[i].position[1] < -0.25)
-    		{
-    			walls[i].position[1] += 0.02;	
-    		}
-    		// else if(i==count_walls-1)jump=0;
-    		i++;
-    	}
+        else
+        {
+            jump=0;
+        }
+    	// var i=0;
+    	// while(i < count_shapes)
+    	// {
+    	// 	if(shapes[i].position[1] < -0.25)
+    	// 	{
+    	// 		shapes[i].position[1] += 0.02;	
+    	// 	}
+    	// 	i++;
+    	// }
+
+    	// i=0;
+    	// while(i < count_obstacles)
+    	// {
+    	// 	if(obstacles[i].position[1] < -0.25)
+    	// 	{
+    	// 		obstacles[i].position[1] += 0.02;	
+    	// 	}
+    	// 	else if(i==count_obstacles-1)jump=0;
+    	// 	i++;
+        // }
+        // i=0;
+    	// while(i < count_walls)
+    	// {
+    	// 	if(walls[i].position[1] < -0.25)
+    	// 	{
+    	// 		walls[i].position[1] += 0.02;	
+    	// 	}
+    	// 	// else if(i==count_walls-1)jump=0;
+    	// 	i++;
+    	// }
+    	// while(i < coins.length)
+    	// {
+    	// 	if(coins[i].position[1] < 0.05)
+    	// 	{
+    	// 		coins[i].position[1] = 0.05;	
+    	// 	}
+    	// 	// else if(i==count_walls-1)jump=0;
+    	// 	i++;
+    	// }
     	// if(light_source.position[1] < 0.0)
     	// {
     	// 	//light_source.position[1] += 0.05;
     	// 	//source_position += 0.05;	
     	// }
     	
+    }
+    while(i < coins.length)
+    {
+        if(coins[i].position[1] < 0.05)
+        {
+            coins[i].position[1] = 0.05;	
+        }
+        // else if(i==count_walls-1)jump=0;
+        i++;
     }
 
     const projectionMatrix = clearScene(gl);
@@ -3304,6 +3400,42 @@ police_hair_buffer=initBuffers(gl,police_hair);
         	else
         		drawScene(gl, projectionMatrix, shapes[i], programInfo, buffer_shapes[i], texture_g2, deltaTime);
         i++;
+    }
+    i=0;
+    removed=[]
+    while(i<coins.length)
+    {
+        if(detect_collision_coins(man_torso,coins[i]))
+        {
+            score+=1;
+            z=coins[i];
+            removed.push(z);
+            coins.splice(i,1);
+            buffer_coins.splice(i,1);
+        }
+        else{
+        i++;
+        }
+    }
+    i=0;
+    while(i<removed.length)
+    {
+        z=removed[i];
+        if(coins.length+1<maxCoins)
+        {
+            coins.push(create_coin());
+        // count_walls++;
+            coins[coins.length - 1].position[2] = coins[coins.length - 2].position[2] - z.position[2];
+            coins[coins.length - 1].position[0] = z.position[0];
+        // coins[coins.length - 1].rotationY = coins[coins.length - 2].rotationY;
+        // coins[coins.length - 1].rotationX = coins[coins.length - 2].rotationX;
+        // coins[coins.length - 1].rotationZ = coins[coins.length - 2].rotationZ;
+            buffer_coins.push(initBuffers(gl, coins[coins.length - 1]));
+        }
+        else
+        {
+            break;
+        }
     }
     i=0;
     while(i<coins.length)
@@ -3332,8 +3464,8 @@ police_hair_buffer=initBuffers(gl,police_hair);
     }
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
     drawScene(gl, projectionMatrix, man_leg1, programInfo, man_leg1_buffer, texture_man_leg, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_g, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe2_buffer, texture_g, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe2_buffer, texture_man_shoes, deltaTime);
     drawScene(gl, projectionMatrix, man_leg2, programInfo, man_leg2_buffer, texture_man_leg, deltaTime);
     drawScene(gl, projectionMatrix, man_hand1, programInfo, man_hand1_buffer, texture_man_hand, deltaTime);
     drawScene(gl, projectionMatrix, man_hand2, programInfo, man_hand2_buffer, texture_man_hand, deltaTime);
@@ -3357,7 +3489,6 @@ police_hair_buffer=initBuffers(gl,police_hair);
     }
     //light_source.position[2] += pause * light_source.speed * deltaTime;
     // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
-
     if(!detect_collision(shapes, obstacles)){
         requestAnimationFrame(render);
     }
@@ -3380,8 +3511,8 @@ function print_data(deltaTime){
     element = document.getElementById("level");
     element.innerHTML = "level: " + level.toString();
     element = document.getElementById("score");
-    var x = 60 * frames / 60 * 100;
-    score = Math.round(x)/100;
+    // var x = 60 * frames / 60 * 100;
+    // score = Math.round(x)/100;
     element.innerHTML = "score: " + score.toString();
 }
 
@@ -3398,6 +3529,11 @@ function detect_collision(shapes, obstacles){
             
     //     }
     // }
+    return false;
+}
+function detect_collision_coins(torso, coin){
+    if(coin.position[2] > -0.5 && Math.abs(torso.position[0]-coin.position[0])<0.166*2)
+        return true;
     return false;
 }
 
@@ -3624,17 +3760,21 @@ function refresh_tunnel(gl, shapes, buffers,walls,bufferw,coins,bufferc){
         walls[count_walls - 1].rotationZ = walls[count_walls - 2].rotationZ;
         bufferw.push(initBuffers(gl, walls[count_walls - 1]));
     }
-    if(coins.length && coins[0].position[2] > 1){
+    while(coins.length && coins[0].position[2] > 1){
+        x_set=x_positions[Math.floor(Math.random()*3)];
         bufferc.shift();
-        coins.shift();
-
-        coins.push(create_coin());
-        // count_walls++;
-        coins[coins.length - 1].position[2] = coins[coins.length - 2].position[2] - 2;
-        // coins[coins.length - 1].rotationY = coins[coins.length - 2].rotationY;
-        // coins[coins.length - 1].rotationX = coins[coins.length - 2].rotationX;
-        // coins[coins.length - 1].rotationZ = coins[coins.length - 2].rotationZ;
-        bufferc.push(initBuffers(gl, coins[coins.length - 1]));
+        z=coins.shift();
+        if(coins.length+1<maxCoins)
+        {
+            coins.push(create_coin());
+            // count_walls++;
+            coins[coins.length - 1].position[2] = coins[coins.length - 2].position[2] - z.position[2];
+            coins[coins.length - 1].position[0] = z.position[0];
+            // coins[coins.length - 1].rotationY = coins[coins.length - 2].rotationY;
+            // coins[coins.length - 1].rotationX = coins[coins.length - 2].rotationX;
+            // coins[coins.length - 1].rotationZ = coins[coins.length - 2].rotationZ;
+            bufferc.push(initBuffers(gl, coins[coins.length - 1]));
+        }
     }
 }
 
