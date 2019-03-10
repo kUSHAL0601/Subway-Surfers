@@ -27,6 +27,13 @@ var halfAngle = Math.PI/8;
 var maxHeight=1.1;
 var x_positions=[-1,0,1];
 var maxCoins=0;
+var maxSuperSneakers=5;
+var maxJetPacks=5;
+var superSneakersOn=false;
+var sneakers=[];
+var jetpacks=[];
+var buffer_sneakers=[];
+var buffer_jetpacks=[];
 // source initialization
 
 var ambient_factor = 5;
@@ -104,7 +111,7 @@ function noPolice()
 }
 function showPol()
 {
-    console.log("Called");
+    // console.log("Called");
     if(showPolice==1)
     {
         pause=0;
@@ -113,6 +120,66 @@ function showPol()
     // policePos=0.5;
     showPolice=1;
     setTimeout(noPolice,4000);
+}
+function disableSneakers()
+{
+    superSneakersOn=false;
+    maxHeight=1.1;
+}
+function superSneakersActivate()
+{
+    superSneakersOn=true;
+    maxHeight=1.75;
+    setTimeout(disableSneakers,15000);
+}
+
+function disableJetpack()
+{
+    camera['camera_position'][1]-=1.75;
+    camera['camera_target'][1]-=1.75;
+    man_hair.position[1]-=1.75;
+    man_shoe1.position[1]-=1.75;
+    man_shoe2.position[1]-=1.75;
+    man_head.position[1]-=1.75;
+    man_hand1.position[1]-=1.75;
+    man_hand2.position[1]-=1.75;
+    man_leg1.position[1]-=1.75;
+    man_leg2.position[1]-=1.75;
+    man_neck.position[1]-=1.75;
+    man_torso.position[1]-=1.75;
+    i=0;
+    while(i<coins.length)
+    {
+        coins[i].position[1]-=1.75;
+        i++;
+    }
+}
+
+function jetpackActivate()
+{
+    camera['camera_position'][1]+=1.75;
+    camera['camera_target'][1]+=1.75;
+    man_hair.position[1]+=1.75;
+    man_shoe1.position[1]+=1.75;
+    man_shoe2.position[1]+=1.75;
+    man_head.position[1]+=1.75;
+    man_hand1.position[1]+=1.75;
+    man_hand2.position[1]+=1.75;
+    man_leg1.position[1]+=1.75;
+    man_leg2.position[1]+=1.75;
+    man_neck.position[1]+=1.75;
+    man_torso.position[1]+=1.75;
+    i=0;
+    while(i<coins.length)
+    {
+        coins[i].position[1]+=1.75;
+        i++;
+    }
+    if(showPolice==1)
+    {
+        noPolice();
+    }
+    setTimeout(disableJetpack,15000);
 }
 
 function hoverMouse(event){
@@ -584,6 +651,177 @@ function create_coin(){
     
     return dict;
 }
+
+function create_pup(){
+	dict = {};
+	dict['position'] = [0, 0.05, 0];
+	dict['radius'] = 1/Math.cos(halfAngle);
+    dict['positions'] = [
+        // Right face
+        0.153, 0.153, 0.153,
+        0.153, 0.153, -0.153,
+        0.153, -0.153, -0.153,
+        0.153, -0.153, 0.153,
+  
+        // Left face
+        -0.153, 0.153, 0.153,
+        -0.153, 0.153, -0.153,
+        -0.153, -0.153, -0.153,
+        -0.153, -0.153, 0.153,
+  
+        // Top faces
+        -0.153, 0.153, 0.153,
+        0.153, 0.153, 0.153,
+        0.153, 0.153, -0.153,
+        -0.153, 0.153, -0.153,
+  
+        // Bottom faces
+        -0.153, -0.153, 0.153,
+        0.153, -0.153, 0.153,
+        0.153, -0.153, -0.153,
+        -0.153, -0.153, -0.153,
+  
+        // Front face
+        -0.153, 0.153, 0.153,
+        0.153, 0.153, 0.153,
+        0.153, -0.153, 0.153,
+        -0.153, -0.153, 0.153,
+  
+        // Back face
+        -0.153, 0.153, -0.153,
+        0.153, 0.153, -0.153,
+        0.153, -0.153, -0.153,
+        -0.153, -0.153, -0.153,
+      ];
+  
+      dict['normals'] = [
+        // Right face
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+  
+        // Left face
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+  
+        // Top faces
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+  
+        // Bottom faces
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+  
+        // Front face
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+  
+        // Back face
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+      ];
+  
+      dict['textureCoordinates'] = [
+          // Front
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Back
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Top
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Bottom
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Right
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Left
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+      ];
+  
+  
+    if(level<=1 || grayscale)
+    {
+	    dict['faceColors'] = [
+	    //   [1.0,  1.0,  1.0,  1.0],    // Top face: white
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Left face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Bottom face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Right face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Right face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Top Right face: black
+	    ];
+	}
+	else
+	{
+    	dict['faceColors'] = [
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        //     [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
+	    ];		
+	}
+    dict['indices'] = [
+      0,  1,  2,      0,  2,  3,    // right
+      4,  5,  6,      4,  6,  7,    // right top
+      8,  9,  10,     8,  10, 11,   // top
+      12, 13, 14,     12, 14, 15,   // top left
+      16, 17, 18,     16, 18, 19,   // left
+      20, 21, 22,     20, 22, 23,   // bottom left
+    //   07, 25, 26,     07, 26, 27,   // bottom
+    //   28, 29, 30,     28, 30, 31,   // bottom right
+    ];
+    dict['rotationX'] = 0;
+    dict['rotationY'] = 0;
+    dict['rotationZ'] = 0;
+    dict['speed'] = 7;
+    dict['numComponentsPosition'] = 3;
+    dict['numComponentsColor'] = 4;
+    dict['vertexCount'] = 36;
+    dict['rotation'] = 0.05;
+    dict['category'] = 0;
+    
+    return dict;
+}
+
 
 function create_shoe1(){
 	dict = {};
@@ -1435,6 +1673,177 @@ function create_torso(){
     
     return dict;
 }
+
+function create_obst1(){
+	dict = {};
+	dict['position'] = [0, -0.05, 0];
+	dict['radius'] = 1/Math.cos(halfAngle);
+    dict['positions'] = [
+        // Right face
+        0.287, 0.31, 0.01,
+        0.287, 0.31, -0.01,
+        0.287, -0.05, -0.01,
+        0.287, -0.05, 0.01,
+  
+        // Left face
+        -0.287, 0.31, 0.01,
+        -0.287, 0.31, -0.01,
+        -0.287, -0.05, -0.01,
+        -0.287, -0.05, 0.01,
+  
+        // Top faces
+        -0.287, 0.31, 0.01,
+        0.287, 0.31, 0.01,
+        0.287, 0.31, -0.01,
+        -0.287, 0.31, -0.01,
+  
+        // Bottom faces
+        -0.287, -0.05, 0.01,
+        0.287, -0.05, 0.01,
+        0.287, -0.05, -0.01,
+        -0.287, -0.05, -0.01,
+  
+        // Front face
+        -0.287, 0.31, 0.01,
+        0.287, 0.31, 0.01,
+        0.287, -0.05, 0.01,
+        -0.287, -0.05, 0.01,
+  
+        // Back face
+        -0.287, 0.31, -0.01,
+        0.287, 0.31, -0.01,
+        0.287, -0.05, -0.01,
+        -0.287, -0.05, -0.01,
+      ];
+  
+      dict['normals'] = [
+        // Right face
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+        0.1, 0, 0,
+  
+        // Left face
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+        -0.1, 0, 0,
+  
+        // Top faces
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+        0, 0.1, 0,
+  
+        // Bottom faces
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+        0, -0.1, 0,
+  
+        // Front face
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+        0, 0, 0.1,
+  
+        // Back face
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+        0, 0, -0.1,
+      ];
+  
+      dict['textureCoordinates'] = [
+          // Front
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Back
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Top
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Bottom
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Right
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+          // Left
+          0.0,  0.0,
+          1.0,  0.0,
+          1.0,  1.0,
+          0.0,  1.0,
+      ];
+  
+  
+    if(level<=1 || grayscale)
+    {
+	    dict['faceColors'] = [
+	    //   [1.0,  1.0,  1.0,  1.0],    // Top face: white
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+	      [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Left face: white
+	    //   [1.0,  1.0,  1.0,  1.0],    // Bottom face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Bottom Right face: black
+	    //   [1.0,  1.0,  1.0,  1.0],    // Right face: white
+	    //   [0.0,  0.0,  0.0,  1.0],    // Top Right face: black
+	    ];
+	}
+	else
+	{
+    	dict['faceColors'] = [
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Top Left Right face: black
+            [0.0,  0.0,  0.0,  1.0],    // Bottom Left face: black
+        //     [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Left face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Bottom Right face: black
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Right face: white
+	    //   [Math.random(),  Math.random(),  Math.random(),  1.0],    // Top Right face: black
+	    ];		
+	}
+    dict['indices'] = [
+      0,  1,  2,      0,  2,  3,    // right
+      4,  5,  6,      4,  6,  7,    // right top
+      8,  9,  10,     8,  10, 11,   // top
+      12, 13, 14,     12, 14, 15,   // top left
+      16, 17, 18,     16, 18, 19,   // left
+      20, 21, 22,     20, 22, 23,   // bottom left
+    //   07, 25, 26,     07, 26, 27,   // bottom
+    //   28, 29, 30,     28, 30, 31,   // bottom right
+    ];
+    dict['rotationX'] = 0;
+    dict['rotationY'] = 0;
+    dict['rotationZ'] = 0;
+    dict['speed'] = 7;
+    dict['numComponentsPosition'] = 3;
+    dict['numComponentsColor'] = 4;
+    dict['vertexCount'] = 36;
+    dict['rotation'] = 0.05;
+    dict['category'] = 0;
+    
+    return dict;
+}
+
 
 function create_hand1(){
 	dict = {};
@@ -2439,12 +2848,14 @@ function create_cuboid(){
     dict['rotationZ'] = 0;
     dict['speed']     = 7;
     dict['rotation']  = type * Math.PI / 2.5 * Math.ceil(Math.random() * (speed_level[level] + 1));
-    console.log(dict['rotation']);
+    // console.log(dict['rotation']);
     return dict;
 }
 
 var amplitude = 0.007;
 var level_frames = 1200;
+var super_sneakers_frames = 800;
+var jetpack_frames=1500;
 
 function create_2triangles(){
     var type = Math.floor(Math.random()*2)*2 - 1;
@@ -2854,11 +3265,13 @@ function main() {
   shapes = [];
   walls = [];
   coins=[];
+  obst1=[]
   obstacles = [];
   
   buffer_shapes = [];
   buffer_walls = [];
   buffer_coins=[];
+  buffer_obst1=[];
   buffer_obstacles = [];
   var i = 0; 
   while(i < count_shapes){
@@ -2906,6 +3319,13 @@ function main() {
           coins[coins.length-1].position[2]=-2*i-1.0;
           coins[coins.length-1].position[0]=1;
           buffer_coins.push(initBuffers(gl,coins[coins.length-1]));
+      }
+      if(Math.floor(Math.random()*6)==0)
+      {
+          obst1.push(create_obst1());
+          obst1[obst1.length-1].position[2]=-2*i;
+          obst1[obst1.length-1].position[0]=x_positions[Math.floor(Math.random()*3)];
+          buffer_obst1.push(initBuffers(gl,obst1[obst1.length-1]));
       }
       buffer_shapes.push(initBuffers(gl, shapes[i]));
       i++;
@@ -3032,6 +3452,11 @@ police_hair_buffer=initBuffers(gl,police_hair);
   const texture_man_head = loadTexture(gl, 'head.jpeg');
   const texture_man_hair = loadTexture(gl, 'hair.jpeg');
   const texture_man_shoes = loadTexture(gl, 'gold-tex-1.jpg');
+  const texture_obst1 = loadTexture(gl, 'obst1.png');
+  const texture_sneaks = loadTexture(gl, 'sneakers.png');
+  const texture_sneakspup = loadTexture(gl, 'sneakerspup.png');
+  const texture_jetpackpup = loadTexture(gl, 'jetpack.png');
+
 
   const texture_police_leg = loadTexture(gl, 'police_pant.png');
   const texture_police_torso = loadTexture(gl, 'police_torso.png');
@@ -3081,6 +3506,23 @@ police_hair_buffer=initBuffers(gl,police_hair);
         i++;
     }
     i=0;
+    while(i<sneakers.length)
+    {
+        drawScene(gl, projectionMatrix, sneakers[i], programInfo, buffer_sneakers[i], texture_sneakspup, deltaTime);
+        i++;
+    }
+    while(i<jetpacks.length)
+    {
+        drawScene(gl, projectionMatrix, jetpacks[i], programInfo, buffer_jetpacks[i], texture_jetpackpup, deltaTime);
+        i++;
+    }
+    i=0;
+    while(i<obst1.length)
+    {
+        drawScene(gl, projectionMatrix, obst1[i], programInfo, buffer_obst1[i], texture_obst1, deltaTime);
+        i++;
+    }
+    i=0;
     while(i<count_walls)
     {
         drawScene(gl, projectionMatrix, walls[i], programInfo, buffer_walls[i], texture_w, deltaTime);
@@ -3097,8 +3539,16 @@ police_hair_buffer=initBuffers(gl,police_hair);
     // drawScene(gl, projectionMatrix, light_source, programInfo, buffer_light_source, texture_2, deltaTime);
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
     drawScene(gl, projectionMatrix, man_leg1, programInfo, man_leg1_buffer, texture_man_leg, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+    if(superSneakersOn)
+    {
+        drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_sneaks, deltaTime);
+        drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_sneaks, deltaTime);
+    }
+    else
+    {
+        drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+        drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+    }
     drawScene(gl, projectionMatrix, man_leg2, programInfo, man_leg2_buffer, texture_man_leg, deltaTime);
     drawScene(gl, projectionMatrix, man_hand1, programInfo, man_hand1_buffer, texture_man_hand, deltaTime);
     drawScene(gl, projectionMatrix, man_hand2, programInfo, man_hand2_buffer, texture_man_hand, deltaTime);
@@ -3183,22 +3633,36 @@ police_hair_buffer=initBuffers(gl,police_hair);
     	//console.log(level);
         // level = Math.min(level + 1, max_level);
     }
+    if(frames%super_sneakers_frames==0)
+    {
+        sneakers.push(create_pup());
+        sneakers[sneakers.length-1].position[2]=-2*count_shapes;
+        sneakers[sneakers.length-1].position[0]=x_positions[Math.floor(Math.random()*3)];
+        buffer_sneakers.push(initBuffers(gl,sneakers[sneakers.length-1]));
+    }
+    if(frames%jetpack_frames==0)
+    {
+        jetpacks.push(create_pup());
+        jetpacks[jetpacks.length-1].position[2]=-2*count_shapes;
+        jetpacks[jetpacks.length-1].position[0]=x_positions[Math.floor(Math.random()*3)];
+        buffer_jetpacks.push(initBuffers(gl,jetpacks[jetpacks.length-1]));
+    }
     print_data(deltaTime);
 
     then = now;
-    refresh_tunnel(gl, shapes, buffer_shapes,walls,buffer_walls,coins,buffer_coins);
+    refresh_tunnel(gl, shapes, buffer_shapes,walls,buffer_walls,coins,buffer_coins,obst1,buffer_obst1);
     refresh_obstacles(gl, obstacles, buffer_obstacles);
     handleKeys(shapes, obstacles);
 
-    // if(changeLighting==1)
-    // {
-    // 	if(colour==1)colour=2;
-    // 	else if(colour==0)colour=1;
-    // 	else colour = 0;
+    if(changeLighting==1)
+    {
+    	if(colour==1)colour=2;
+    	else if(colour==0)colour=1;
+    	else colour = 0;
 
-    // 	changeLighting = 0;
-    // 	changeShader(gl);
-    // }
+    	changeLighting = 0;
+    	changeShader(gl);
+    }
 
     if(periodicRandom==1)
     {
@@ -3375,16 +3839,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     	// }
     	
     }
-    while(i < coins.length)
-    {
-        if(coins[i].position[1] < 0.05)
-        {
-            coins[i].position[1] = 0.05;	
-        }
-        // else if(i==count_walls-1)jump=0;
-        i++;
-    }
-
+ 
     const projectionMatrix = clearScene(gl);
     var i=0;
     while(i < count_shapes){
@@ -3426,10 +3881,8 @@ police_hair_buffer=initBuffers(gl,police_hair);
             coins.push(create_coin());
         // count_walls++;
             coins[coins.length - 1].position[2] = coins[coins.length - 2].position[2] - z.position[2];
+            coins[coins.length - 1].position[1] = z.position[1];
             coins[coins.length - 1].position[0] = z.position[0];
-        // coins[coins.length - 1].rotationY = coins[coins.length - 2].rotationY;
-        // coins[coins.length - 1].rotationX = coins[coins.length - 2].rotationX;
-        // coins[coins.length - 1].rotationZ = coins[coins.length - 2].rotationZ;
             buffer_coins.push(initBuffers(gl, coins[coins.length - 1]));
         }
         else
@@ -3438,10 +3891,73 @@ police_hair_buffer=initBuffers(gl,police_hair);
         }
     }
     i=0;
+    while(i<obst1.length)
+    {
+        if(detect_collision_obst1(man_torso,obst1[i]))
+        {
+            // pause=0;
+            shakey_screen(gl, shapes, buffer_shapes, obstacles, buffer_obstacles);
+            break;
+        }
+        else{
+        i++;
+        }
+    }
+    i=0;
+    while(i<sneakers.length)
+    {
+        if(detect_collision_coins(man_torso,sneakers[i]))
+        {
+            // pause=0;
+            sneakers.splice(i,1);
+            buffer_sneakers.splice(i,1);
+            superSneakersActivate();
+        }
+        else{
+        i++;
+        }
+    }
+    i=0;
+    while(i<jetpacks.length)
+    {
+        if(detect_collision_coins(man_torso,jetpacks[i]))
+        {
+            // pause=0;
+            jetpacks.splice(i,1);
+            buffer_jetpacks.splice(i,1);
+            jetpackActivate();
+        }
+        else{
+        i++;
+        }
+    }
+
+    i=0;
     while(i<coins.length)
     {
         coins[i].position[2] += pause * coins[i].speed * deltaTime;
         drawScene(gl, projectionMatrix, coins[i], programInfo, buffer_coins[i], texture_g, deltaTime);
+        i++;
+    }
+    i=0;
+    while(i<sneakers.length)
+    {
+        sneakers[i].position[2] += pause * sneakers[i].speed * deltaTime;
+        drawScene(gl, projectionMatrix, sneakers[i], programInfo, buffer_sneakers[i], texture_sneakspup, deltaTime);
+        i++;
+    }
+    i=0;
+    while(i<jetpacks.length)
+    {
+        jetpacks[i].position[2] += pause * jetpacks[i].speed * deltaTime;
+        drawScene(gl, projectionMatrix, jetpacks[i], programInfo, buffer_jetpacks[i], texture_jetpackpup, deltaTime);
+        i++;
+    }
+    i=0;
+    while(i<obst1.length)
+    {
+        obst1[i].position[2] += pause * obst1[i].speed * deltaTime;
+        drawScene(gl, projectionMatrix, obst1[i], programInfo, buffer_obst1[i], texture_obst1, deltaTime);
         i++;
     }
 
@@ -3464,8 +3980,16 @@ police_hair_buffer=initBuffers(gl,police_hair);
     }
     // drawScene(gl, projectionMatrix, coins[0], programInfo, buffer_coins[0], texture_g, deltaTime);
     drawScene(gl, projectionMatrix, man_leg1, programInfo, man_leg1_buffer, texture_man_leg, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
-    drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe2_buffer, texture_man_shoes, deltaTime);
+    if(superSneakersOn)
+    {
+        drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_sneaks, deltaTime);
+        drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_sneaks, deltaTime);
+    }
+    else
+    {
+        drawScene(gl, projectionMatrix, man_shoe1, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+        drawScene(gl, projectionMatrix, man_shoe2, programInfo, man_shoe1_buffer, texture_man_shoes, deltaTime);
+    }
     drawScene(gl, projectionMatrix, man_leg2, programInfo, man_leg2_buffer, texture_man_leg, deltaTime);
     drawScene(gl, projectionMatrix, man_hand1, programInfo, man_hand1_buffer, texture_man_hand, deltaTime);
     drawScene(gl, projectionMatrix, man_hand2, programInfo, man_hand2_buffer, texture_man_hand, deltaTime);
@@ -3517,23 +4041,23 @@ function print_data(deltaTime){
 }
 
 function detect_collision(shapes, obstacles){
-    // for (var i = 0; i < count_obstacles; i++){
-    //     if(obstacles[i].position[2] > -0.5){
-    //         var theta = obstacles[i].rotationZ - Math.floor(obstacles[i].rotationZ / Math.PI) * Math.PI;
-    //         var alpha = shapes[0].rotationZ - Math.floor(shapes[0].rotationZ / Math.PI) * Math.PI;
-
-    //         if((theta+halfAngle)>Math.PI)theta-=Math.PI;
-    //         if((-Math.PI / 8 <= theta && theta <= Math.PI / 8) || Math.abs(obstacles[i].position[1])<=0.05){
-    //             return true;
-    //         }
-            
-    //     }
-    // }
-    return false;
+   return false;
 }
 function detect_collision_coins(torso, coin){
     if(coin.position[2] > -0.5 && Math.abs(torso.position[0]-coin.position[0])<0.166*2)
         return true;
+    return false;
+}
+
+function detect_collision_obst1(torso, obstacle){
+    if(obstacle.position[2] > -0.5 && Math.abs(torso.position[0]-obstacle.position[0])<0.31 && Math.abs(torso.position[1]-obstacle.position[1])<=0.41)
+    {
+        // console.log(Math.abs(torso.position[1]-obstacle.position[1]));
+        // console.log(Math.abs(torso.position[0]-obstacle.position[0]));
+        return true;   
+    }
+    // console.log(Math.abs(torso.position[0]-obstacle.position[0]));
+    // console.log(Math.abs(torso.position[1]-obstacle.position[1]));
     return false;
 }
 
@@ -3728,7 +4252,7 @@ function handleKeys(shapes, obstacles){
 
 
 
-function refresh_tunnel(gl, shapes, buffers,walls,bufferw,coins,bufferc){
+function refresh_tunnel(gl, shapes, buffers,walls,bufferw,coins,bufferc,obst1,buffero){
     if(shapes.length && shapes[0].position[2] > 1){
         count_shapes--;
         buffers.shift();
@@ -3769,12 +4293,29 @@ function refresh_tunnel(gl, shapes, buffers,walls,bufferw,coins,bufferc){
             coins.push(create_coin());
             // count_walls++;
             coins[coins.length - 1].position[2] = coins[coins.length - 2].position[2] - z.position[2];
+            coins[coins.length - 1].position[1] = z.position[1];
             coins[coins.length - 1].position[0] = z.position[0];
-            // coins[coins.length - 1].rotationY = coins[coins.length - 2].rotationY;
-            // coins[coins.length - 1].rotationX = coins[coins.length - 2].rotationX;
-            // coins[coins.length - 1].rotationZ = coins[coins.length - 2].rotationZ;
             bufferc.push(initBuffers(gl, coins[coins.length - 1]));
         }
+    }
+    if(sneakers.length && sneakers[0].position[2]>1)
+    {
+        sneakers.shift()
+        buffer_sneakers.shift();
+    }
+    if(jetpacks.length && jetpacks[0].position[2]>1)
+    {
+        jetpacks.shift()
+        buffer_jetpacks.shift();
+    }
+    if(obst1.length && obst1[0].position[2] > 1){
+        x_set=x_positions[Math.floor(Math.random()*3)];
+        buffero.shift();
+        z=obst1.shift();
+        obst1.push(create_obst1());
+        obst1[obst1.length - 1].position[2] = -2*count_shapes;
+        obst1[obst1.length - 1].position[0] = x_set;
+        buffero.push(initBuffers(gl, obst1[obst1.length - 1]));
     }
 }
 
