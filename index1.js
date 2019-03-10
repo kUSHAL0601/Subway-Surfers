@@ -117,6 +117,9 @@ function showPol()
     if(showPolice==1)
     {
         pause=0;
+        element = document.getElementById("id01");
+        element.style.display='block';
+
     }
     manPos=1.8;
     // policePos=0.5;
@@ -3994,6 +3997,9 @@ police_hair_buffer=initBuffers(gl,police_hair);
         if(!jetPackon && detect_collision_obst1(man_torso,obst1[i]))
         {
             // pause=0;
+            element = document.getElementById("id01");
+            element.style.display='block';
+    
             shakey_screen(gl, shapes, buffer_shapes, obstacles, buffer_obstacles);
             break;
         }
@@ -4235,6 +4241,9 @@ police_hair_buffer=initBuffers(gl,police_hair);
 function print_data(deltaTime){
     // element = document.getElementById("level");
     // element.innerHTML = "level: " + level.toString();
+    element = document.getElementById("m_score");
+    element.innerHTML = "SCORE: " + score.toString();
+
     element = document.getElementById("score");
     // var x = 60 * frames / 60 * 100;
     // score = Math.round(x)/100;

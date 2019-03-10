@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Subways Surfers</title>
+    <title>SUBWAY SURFERS</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
 
@@ -25,9 +25,27 @@
         <span>Jetpack</span>
           <div class="w3-container w3-blue w3-round-xlarge" style="width:0%;background-color:white;" id="j_bar"></div>
       </div>
+      <div id="id01" class="w3-modal" style="margin-top:200px;">
+          <div class="w3-modal-content">
+            <div class="w3-container">
+              <span onclick="document.getElementById('id01').style.display='none';" class="w3-button w3-display-topright">&times;</span>
+              <h1>GAME OVER</h1>
+              <p id="m_score"></p>
+              <button onclick="foo()">Play Again</button>
+              <br>
+              <br>
+            </div>
+          </div>
+        </div>
       </center>
   </body>
-
+  <script>
+    function foo()
+    {
+      document.getElementById('id01').style.display='none';
+      window.location.reload();
+    }
+  </script>
   <script src="./gl-matrix.js"></script>
   <script src="shader-const.js"></script>
   <script src="index1.js"></script>
