@@ -2,17 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>WebGL Demo</title>
+    <title>Subways Surfers</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
 
-  <body>
+  <body style="background-color:black">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <center>
     <canvas id="glcanvas" width="640" height="480"></canvas><br><br><br>
-    <!-- <h3 id="theta">0</h3><br> -->
-    <!-- <h3 id="alpha">0</h3><br> -->
-    <!-- <h3 id="frames">0</h3><br> -->
-    <h3 id="level">1</h3><br>
-    <h3 id="score">0</h3><br>
-    <!-- <h3 id="speed">0</h3><br> -->
+    <h3 id="score" style="color: white">0</h3><br>
+    <div class="w3-light-grey w3-round-xlarge" style="width:500px">
+      <span>Super Sneakers</span>
+        <div class="w3-container w3-blue w3-round-xlarge" style="width:0%;background-color:white;" id="s_bar"></div>
+    </div>
+    <br>
+    <div class="w3-light-grey w3-round-xlarge" style="width:500px">
+        <span>Jetpack</span>
+          <div class="w3-container w3-blue w3-round-xlarge" style="width:0%;background-color:white;" id="j_bar"></div>
+      </div>
+      </center>
   </body>
 
   <script src="./gl-matrix.js"></script>

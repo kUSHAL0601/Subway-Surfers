@@ -89,9 +89,11 @@ var police_head_buffer;
 var police_hair;
 var police_hair_buffer;
 var g_start=1;
-
+var jetPackon=false;
 var shaderProgram;
 var programInfo;
+var j_start=0;
+var s_start=0;
 
 function noPolice()
 {
@@ -130,11 +132,13 @@ function superSneakersActivate()
 {
     superSneakersOn=true;
     maxHeight=1.75;
+    s_start=new Date();
     setTimeout(disableSneakers,15000);
 }
 
 function disableJetpack()
 {
+    jetPackon=false;
     camera['camera_position'][1]-=1.75;
     camera['camera_target'][1]-=1.75;
     man_hair.position[1]-=1.75;
@@ -157,6 +161,7 @@ function disableJetpack()
 
 function jetpackActivate()
 {
+    jetPackon=true;
     camera['camera_position'][1]+=1.75;
     camera['camera_target'][1]+=1.75;
     man_hair.position[1]+=1.75;
@@ -179,6 +184,7 @@ function jetpackActivate()
     {
         noPolice();
     }
+    j_start=new Date();
     setTimeout(disableJetpack,15000);
 }
 
@@ -3985,7 +3991,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     i=0;
     while(i<obst1.length)
     {
-        if(detect_collision_obst1(man_torso,obst1[i]))
+        if(!jetPackon && detect_collision_obst1(man_torso,obst1[i]))
         {
             // pause=0;
             shakey_screen(gl, shapes, buffer_shapes, obstacles, buffer_obstacles);
@@ -3998,7 +4004,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     i=0;
     while(i<obst2.length)
     {
-        if(detect_collision_obst2(man_torso,obst2[i]))
+        if(!jetPackon && detect_collision_obst2(man_torso,obst2[i]))
         {
             // pause=0;
             obst2.splice(i,1);
@@ -4014,7 +4020,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     i=0;
     while(i<sneakers.length)
     {
-        if(detect_collision_coins(man_torso,sneakers[i]))
+        if(!jetPackon && detect_collision_coins(man_torso,sneakers[i]))
         {
             // pause=0;
             sneakers.splice(i,1);
@@ -4028,7 +4034,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     i=0;
     while(i<jetpacks.length)
     {
-        if(detect_collision_coins(man_torso,jetpacks[i]))
+        if(!jetPackon &&  detect_collision_coins(man_torso,jetpacks[i]))
         {
             // pause=0;
             jetpacks.splice(i,1);
@@ -4063,6 +4069,7 @@ police_hair_buffer=initBuffers(gl,police_hair);
     i=0;
     while(i<jetpacks.length)
     {
+        jetpacks[i].position[2] += pause * jetpacks[i].speed * deltaTime;
         if(grayscale==0)
         drawScene(gl, projectionMatrix, jetpacks[i], programInfo, buffer_jetpacks[i], texture_jetpackpup, deltaTime);
         else
@@ -4226,12 +4233,40 @@ police_hair_buffer=initBuffers(gl,police_hair);
 //
 
 function print_data(deltaTime){
-    element = document.getElementById("level");
-    element.innerHTML = "level: " + level.toString();
+    // element = document.getElementById("level");
+    // element.innerHTML = "level: " + level.toString();
     element = document.getElementById("score");
     // var x = 60 * frames / 60 * 100;
     // score = Math.round(x)/100;
-    element.innerHTML = "score: " + score.toString();
+    element.innerHTML = "SCORE: " + score.toString();
+    element = document.getElementById("s_bar");
+    if(superSneakersOn)
+    {
+        curTime=new Date();
+        timeElapsed=curTime-s_start;
+        element.style.width=(100-Math.ceil(timeElapsed*100/15000)).toString()+ '%';
+        element.innerHTML=(100-Math.ceil(timeElapsed*100/15000)).toString()+ '%';
+        if((100-Math.ceil(timeElapsed*100/15000))==0)
+            element.innerHTML="";
+    }
+    else
+    {
+        element.innerHTML = "";
+    }
+    element = document.getElementById("j_bar");
+    if(jetPackon)
+    {
+        curTime=new Date();
+        timeElapsed=curTime-j_start;
+        element.style.width=(100-Math.ceil(timeElapsed*100/15000)).toString()+ '%';
+        element.innerHTML=(100-Math.ceil(timeElapsed*100/15000)).toString()+ '%';
+        if((100-Math.ceil(timeElapsed*100/15000))==0)
+            element.innerHTML="";
+    }
+    else
+    {
+        element.innerHTML = "";
+    }
 }
 
 function detect_collision(shapes, obstacles){
