@@ -4389,7 +4389,7 @@ function handleKeyUp(event){
 		if(oscillation==0)oscillation=1;
 		// else if(oscillation>=1){oscillation=0;light_source.position[2]=-2;source_position[2]=-1;}
 	}
-	else if(event.keyCode == 32){
+	else if(event.keyCode == 32 && !jetPackon){
 		// Spacebar for jump
 		if(jump==0)jump=1;
 	}   
